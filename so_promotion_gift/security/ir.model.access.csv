@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_promotion_sale_free_gift_global,sale.promotion.sale.free.gift.global,so_promotion_gift.model_sale_promotion_sale_free_gift,,1,1,1,1

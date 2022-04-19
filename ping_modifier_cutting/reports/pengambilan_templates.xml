@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_pengambilan_form_ping_document">
+	<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+	<style type="text/css" media="print">
+		@media print {
+	    html, body {
+	        display: block; 
+	        font-family: "Calibri";
+	        margin: 0;
+	    }
+        body {
+        color: #000 !important;
+        font-family: Helvetica, Arial, sans-serif;
+        width: 100mm;
+        }
+        .border-all {
+	        border-top: 1px solid black !important;
+	        border-bottom: 1px solid black !important;
+	        border-left: 1px solid black !important;
+	        border-right: 1px solid black !important;
+        }
+        .border-top {
+	        border-top: 1px solid black !important;
+        }
+        .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+        }
+        .zero_min_height {
+        min-height: 0px !important;
+        }
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+    <div class="page">
+    <div>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm; font-size: 10px;" >
+			<tr t-if="o.func_count_print_pengambilan() > 1">
+				<td colspan="2" align="right"><strong>Copy/Duplicate</strong></td>
+			</tr>
+			<tr>
+				<td width="30%">
+					<h5>
+						<span t-field="o.name" />
+					</h5>
+				</td>
+				<td width="70%" align="right">
+					SURAT PENGAMBILAN BARANG
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align="right">
+					<img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:150px;height:30px"/>
+				</td>
+			</tr>
+			<tr>
+				<td><strong>Customer Address :</strong></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					<div t-if="o.move_lines and o.move_lines[0].partner_id and not o.partner_id" name="partner_header">
+                        <div t-field="o.move_lines[0].partner_id"
+                           t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True}'/>
+                    </div>
+                    <div t-if="o.partner_id" name="partner_header">
+                        <div t-field="o.partner_id"
+                           t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True}'/>
+                    </div>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><strong>Penanggung Jawab</strong></td>
+				<td>: <span t-field="o.sale_id.order_contact_name"/></td>
+			</tr>
+		</table>
+		
+		<table class="table table-condensed mt48" style="font-size: 10px;">
+			<thead>
+                <tr>
+                    <th><strong>Product</strong></th>
+                    <th><strong>Quantity</strong></th>
+                    <th><strong>Location</strong></th>
+                    <th><strong>Check</strong></th>
+                </tr>
+            </thead>
+            
+            <t t-set="total_qty" t-value="0" />
+            
+            <tbody>
+                <tr t-foreach="o.pack_operation_product_ids" t-as="pack">
+                	<t t-set="total_qty" t-value="pack.qty_done" />
+                	
+                    <td><span t-field="pack.product_id"/></td>
+                    <td>
+                        <span t-field="pack.qty_done"/>
+                        <span t-field="pack.product_uom_id"/>
+                    </td>
+                    <td><span t-field="pack.location_id.name"/></td>
+                    <td>
+                    	<t t-if="pack.item_checked==True">
+                    		<input type="checkbox" checked="True"/>
+                    	</t>
+                    	<t t-else="">
+                    		<input type="checkbox"/>
+                    	</t>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+		
+		<div class="row" style="font-size: 10px;">
+       		<div class="col-xs-4"><strong>Jumlah Qty</strong></div>
+       		<div class="col-xs-8">: <span t-esc="total_qty"/></div>
+       	</div>
+           
+		<div class="row" style="font-size: 10px;">
+			<div class="col-xs-6">
+				<span style="font-weight:bold">Summary</span>
+				<br/>
+				<span t-field="o.qty_summary"/>			
+			</div>
+		</div>
+		
+		<br/>
+		<table style="font-size: 10px;">
+	     	<tr>
+	     		<td width="20%">Checked By</td>
+	     		<td width="5%"></td>
+	     		<td width="20%">Petugas Pengambilan</td>
+	     		<td width="5%"> &#160; </td>
+	     		<td width="20%">Customer</td>
+	     		<td width="5%"> &#160; </td>
+	     		<td width="20%">Penanggung Jawab</td>
+	     		<td width="5%"> &#160; </td>
+	     	</tr>
+	     	<tr>
+	     		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black; height:70px"> &#160; </td>
+	     		<td></td>
+	     		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black;"> &#160; </td>
+	     		<td></td>
+	     		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black;"> &#160; </td>
+	     		<td></td>
+	     		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black;"> &#160; </td>
+	     		<td></td>
+	     	</tr>
+	     </table>
+		
+	</div>
+	</div>
+	<br/>
+    
+</template>
+
+<template id="report_pengambilan_form_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_pengambilan_form_ping_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

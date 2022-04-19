@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_returA4_form_ping_document">
+	<t t-call="report.html_container">
+	           <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+	           <div class="header">
+			        <div class="row">
+			            <div class="col-xs-2">
+			                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 45px;"/>
+			            </div>
+			            <div class="col-xs-7" name="company_address">
+			                <span t-field="o.company_id.partner_id"
+			                    t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+			                    style="display:inline-block;"/>
+			            </div>
+			            <div class="col-xs-3 text-right" style="margin-top:20px;">Refund</div>
+			        </div>
+			        <div class="row zero_min_height">
+			            <div class="col-xs-12">
+			                <div style="border-bottom: 1px solid black;"></div>
+			            </div>
+			        </div>
+			    </div>
+           
+           
+                
+                <div class="page">
+                	<div t-if="o.func_count_print_retur() > 1" class="row">
+		            	<div class="col-xs-12" align="right"><strong>Copy/Duplicate</strong></div>
+		            </div>
+                	<div class="row">
+                		<div class="col-xs-4">
+                			<h4>
+		                        <span t-field="o.origin"/>
+		                    </h4>
+                		</div>
+                	</div>
+                
+                    <div class="row" name="customer_address">
+                        <div class="col-xs-4">
+                            <div>
+                                <span><strong>Customer Address:</strong></span>
+                            </div>
+                            <div t-if="o.move_lines and o.move_lines[0].partner_id and not o.partner_id" name="partner_header">
+                                <div t-field="o.move_lines[0].partner_id"
+                                   t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True}'/>
+                            </div>
+                            <div t-if="o.partner_id" name="partner_header">
+                                <div t-field="o.partner_id"
+                                   t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True}'/>
+                            </div>
+                        </div>
+                        <div class="col-xs-4"></div>
+                        <div class="col-xs-4">
+                        	<strong>Refund Number :</strong> <span t-field="o.name"/>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                		<div class="col-xs-2"><strong>Date</strong></div>
+                		<div class="col-xs-4">: <span t-field="o.min_date"/></div>
+                	</div>
+                    <div class="row">
+                		<div class="col-xs-2"><strong>Refund</strong></div>
+                		<div class="col-xs-4">: <span t-field="o.date_done"/></div>
+                	</div>
+                    <div class="row">
+                		<div class="col-xs-2"><strong>Sales Order</strong></div>
+                		<div class="col-xs-4">: <span t-field="o.sale_id.name or o.group_id.name"/></div>
+                	</div>
+                    
+                    <table class="table table-condensed mt48" t-if="not o.pack_operation_ids">
+                        <thead>
+                            <tr>
+                                <th><strong>Product</strong></th>
+                                <th><strong>Quantity</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.move_lines" t-as="move">
+                                <td><span t-field="move.product_id"/></td>
+                                <td>
+                                    <span t-field="move.product_uom_qty"/>
+                                    <span t-field="move.product_uom"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-condensed mt48" t-if="o.pack_operation_ids">
+                        <t t-set="has_serial_number" t-value="o.pack_operation_ids.filtered('pack_lot_ids')" groups="stock.group_production_lot"/>
+                        <thead>
+                            <tr>
+                                <th><strong>Product</strong></th>
+                                <th name="lot_serial" t-if="has_serial_number">
+                                    <span class="pull-left">Lot/Serial Number</span>
+                                </th>
+                                <th class="text-center"><strong>Qty</strong></th>
+                                <th class="text-center"><strong>Qty Delivery</strong></th>
+                                <th class="text-center"><strong>Location</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                        	<t t-set="total_qty" t-value="0" />
+                        	<t t-set="total_qty_delivery" t-value="0" />
+							
+                            <tr t-foreach="o.pack_operation_ids" t-as="pack_operation">
+                            	
+                            	<t t-set="total_qty" t-value="total_qty+pack_operation.product_qty" />
+                            	<t t-set="total_qty_delivery" t-value="total_qty+pack_operation.qty_done" />
+                            	
+                                <td>
+                                    <span t-field="pack_operation.product_id"/>
+                                    <t t-if="not pack_operation.product_id and pack_operation.package_id">
+                                        <span  t-field="pack_operation.package_id"/>
+                                    </t>
+                                </td>
+                                <t t-if="has_serial_number">
+                                    <td t-if="pack_operation.pack_lot_ids">
+                                        <table class="table table-condensed" t-if="pack_operation.pack_lot_ids">
+                                            <tr t-foreach="pack_operation.pack_lot_ids" t-as="packlot">
+                                                <td>
+                                                    <span t-field="packlot.lot_id"/>
+                                                    <t t-if="not packlot.lot_id">
+                                                        <span t-field="packlot.lot_name"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td t-if="not pack_operation.pack_lot_ids"/>
+                                </t>
+                                <td class="text-center">
+                                    <span t-field="pack_operation.product_qty"/>
+                                    <span t-field="pack_operation.product_uom_id"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="pack_operation.qty_done"/>
+                                    <span t-field="pack_operation.product_uom_id"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="pack_operation.from_loc"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="row">
+                		<div class="col-xs-2"><strong>Total Qty</strong></div>
+                		<div class="col-xs-4">: <span t-esc="total_qty"/></div>
+                	</div>
+                    
+                    <p t-if="o.backorder_id">
+                        This shipment is a backorder of <t t-esc="o.backorder_id.name"/>.
+                    </p>
+                    <p>
+                        <t t-if="o.search([('backorder_id', '=', o.id), ('state', 'not in', ['cancel', 'done'])])">
+                            All items couldn't be shipped, the remaining ones will be shipped as soon as they become available.
+                        </t>
+                    </p>
+                    
+                    <div height="20px">  &#160;  </div>
+                    
+                    <table>
+		            	<tr>
+		            		<td width="15%">Checked By</td>
+		            		<td width="5%"></td>
+		            		<td width="15%">Verified By</td>
+		            		<td width="65%"> &#160; </td>
+		            	</tr>
+		            	<tr>
+		            		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black; height:70px"> &#160; </td>
+		            		<td></td>
+		            		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black;"> &#160; </td>
+		            		<td></td>
+		            	</tr>
+		            </table>
+                    
+                    
+                </div>
+                
+                
+         </t>
+</template>
+
+<template id="report_returA4_form_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_returA4_form_ping_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

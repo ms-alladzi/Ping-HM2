@@ -1,0 +1,141 @@
+<odoo>
+	<data>
+		<!-- <record id="view_partner_property_membership_form" model="ir.ui.view">
+            <field name="name">res.partner.property.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <page name="sales_purchases" position="after">
+	                <page string="Accounting" name="accounting" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}">
+	                    <group>
+	                    </group>
+	                </page>
+				</page>
+			</field>
+		</record> -->
+		
+		<record model="ir.ui.view" id="membership.view_partner_form">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <!-- <field name="inherit_id" ref="base.view_partner_form"/> -->
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page name="membership" string="Membership">
+                        <group>
+                            <group>
+                                <field name="free_member"/>
+                                <label for="membership_state"/>
+                                <div>
+                                    <field name="membership_state"/>
+                                    <button name="%(membership.action_membership_invoice_view)d" type="action" string="Buy Membership" 
+                                        attrs="{'invisible':[('free_member','=',True)]}" class="oe_link"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="associate_member" attrs="{'invisible':[('free_member','=',True)]}"/>
+                                <field name="membership_start" attrs="{'invisible':[('membership_start','=',False)]}"/>
+                                <field name="membership_stop" attrs="{'invisible':[('membership_stop','=',False)]}"/>
+                                <field name="membership_cancel" attrs="{'invisible':[('membership_cancel','=',False)]}"/>
+                            </group>
+                        </group>
+                        <field name="member_lines" nolabel="1" colspan="4" readonly="1">
+                            <tree string="Memberships">
+                                <field name="date"/>
+                                <field name="membership_id"/>
+                                <field name="member_price"/>
+                                <field name="account_invoice_id"/>
+                                <field name="state"/>
+                            </tree>
+                            <form string="Memberships">
+                                <group col="2">
+                                    <group>
+                                        <field name="membership_id"/>
+                                        <field name="date"/>
+                                        <field name="state"/>
+                                    </group>
+                                    <group>
+                                        <field name="member_price"/>
+                                        <field name="account_invoice_id" context="{'form_view_ref': 'account.invoice_form'}"/>
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+
+                    </page>
+                </notebook>
+            </field>
+        </record>
+		
+		<record id="view_partner_ping_form" model="ir.ui.view">
+            <field name="name">res.partner.ping.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">         
+            	<field name="website" position="before">
+            		<field name="customer_code" attrs="{'invisible': [('customer','!=',True)]}"/>
+            	</field>
+            	<field name="lang" position="after">
+            		<field name="vendor_code" attrs="{'invisible': [('supplier','!=',True)], 'required': [('supplier','=',True)]}"/>
+            	</field>
+            	<page name="sales_purchases" position="after">
+	                <page string="Order" name="order">
+	            		<field name="vendor_order_rules_ids">
+	            			<tree editable="bottom">
+	            				<field name="vendor_color_group_id" required="True"/>
+	            				<field name="min_order_by_color" required="True"/>
+	            				<field name="max_order_by_color" required="True"/>
+	            			</tree>
+	            		</field>
+	                </page>
+	                <page string="Courier" name="courier" attrs="{'invisible': [('supplier','!=',True)]}">
+	                    <group>
+	                        <group string="Courier">
+	                            <field name="courier"/>
+	                        </group>
+	                        <group>
+	                        </group>
+	                    </group>
+	                </page>
+				</page>
+            </field>
+		</record>
+		
+		<record id="view_partner_ping_membership_form" model="ir.ui.view">
+            <field name="name">res.partner.ping.membership.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="membership.view_partner_form" />
+            <field name="arch" type="xml">
+				<!-- <xpath expr="//form/sheet/notebook/page[7]/group/group[2]/field[@name='membership_cancel']" position="replace"> -->
+				<xpath expr="//form/sheet/notebook/page[@name='membership']/group/group[2]/field[@name='membership_cancel']" position="replace">
+					<field name="membership_number"/>
+					<field name="membership_product_id"/>
+					<field name="customer_scoring"/>
+					<field name="card_membership_delivery_date"/>
+					<field name="same_address_membership"/>
+					<label for="membership_delivery_street" string="Delivery Address"/>
+                    <div class="o_address_format">
+                        <field name="membership_delivery_street" placeholder="Street..." class="o_address_street"/>
+                        <field name="membership_delivery_street2" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="membership_delivery_city" placeholder="City" class="o_address_city"/>
+                    </div>
+                    <field name="image_background_membercard" widget='image' class="oe_avatar" options='{"preview_image": "image_background_membercard_medium"}' readonly="True"/>
+                    <field name="image_background_membercard_medium" invisible="True"/>
+                    <button name="open_membercard_wizz" type="object" string="Print Membercard" class="btn-primary"/>
+                    <button name="create_reprint_invoice" type="object" string="Create Invoice RePrint" class="btn-primary" confirm="Are you sure to Create Invoice ?"/>
+				</xpath>
+            </field>
+		</record>
+		
+		<!-- <record id="view_partner_property_ping_form" model="ir.ui.view">
+			<field name="name">res.partner.purchase.property.form.ping.inherit</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form" />
+			<field name="arch" type="xml">
+				<field name="supplier" position="after">
+					<field name="courier"/>
+				</field>
+			</field>
+		</record> -->
+		
+	</data>
+</odoo>

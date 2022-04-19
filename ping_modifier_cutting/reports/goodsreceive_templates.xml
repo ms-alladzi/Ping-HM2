@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_goodsreceive_form_ping_document">
+	<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+	<style type="text/css" media="print">
+		@media print {
+	    html, body {
+	        display: block; 
+	        font-family: "Calibri";
+	        margin: 0;
+	    }
+        body {
+        color: #000 !important;
+        font-family: Helvetica, Arial, sans-serif;
+        width: 100mm;
+        }
+        .border-all {
+	        border-top: 1px solid black !important;
+	        border-bottom: 1px solid black !important;
+	        border-left: 1px solid black !important;
+	        border-right: 1px solid black !important;
+        }
+        .border-top {
+	        border-top: 1px solid black !important;
+        }
+        
+        .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+        }
+        .zero_min_height {
+        min-height: 0px !important;
+        }
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+	<div class="page">
+    
+    
+	<div>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<tr t-if="o.func_count_print_goodsreceive() > 1">
+				<td colspan="2" align="right"><strong>Copy/Duplicate</strong></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span t-field="o.name"/></td>
+			</tr>
+			<tr>
+				<td width="30%">Supplier Name</td>
+				<td width="70%">: <span t-field="o.partner_id.name"/></td>
+			</tr>
+		</table>
+		<br/>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<thead>
+				<tr style="font-weight:bold">
+					<td class="text-left">Produk</td>
+					<td class="text-center" colspan="2">Jumlah</td>
+					<td class="text-right">Roll</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t t-foreach="o.pack_operation_product_ids" t-as="line">
+					<tr>
+						<td><span t-esc="line.product_id.vendor_original_name.name or '-'"/>
+							<span t-esc="line.product_id.name"/>
+						</td>
+						<td class="text-right"><span t-field="line.qty_done"/></td>
+						<td class="text-left">&#160; <span t-field="line.product_uom_id.name"/></td>
+						<td class="text-right"><span t-field="line.count_qty_lot"/></td>
+						<!-- <td ><span t-esc="line.pack_lot_ids and line.pack_lot_ids[0].lot_id.batch_name or ''"/></td> -->
+					</tr>
+				</t>
+			</tbody>
+		</table>
+		<br/>
+		<div>
+			<span style="font-weight:bold">Jumlah Qty</span>
+			<br/>
+			<span t-field="o.qty_summary"/>
+		</div>
+
+		<br/>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<thead>
+				<tr style="font-weight:bold">
+					<td class="text-left">Produk</td>
+					<td class="text-center" colspan="2">Qty</td>
+				</tr>
+			</thead>
+			<tbody>
+				<t t-foreach="o.pack_operation_product_ids" t-as="line">
+					<t t-if="line.pack_lot_ids">
+						<tr t-foreach="line.pack_lot_ids" t-as="pack">
+							<td class="text-left"><span t-field="line.product_id.name"/></td>
+							<td class="text-right"><span t-field="pack.qty"/></td>
+						</tr>
+					</t>
+					<t t-if="not line.pack_lot_ids">
+						<td class="text-left"><span t-field="line.product_id.name"/></td>
+						<td class="text-right"><span t-field="line.qty_done"/></td>
+					</t>
+				</t>
+			</tbody>
+		</table>
+		
+	</div>
+	</div>
+	<br/>
+</template>
+
+<template id="report_goodsreceive_form_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_goodsreceive_form_ping_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

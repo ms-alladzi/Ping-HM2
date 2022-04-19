@@ -1,0 +1,20 @@
+<odoo>
+	<data>
+		<record id="view_cancel_wizz" model="ir.ui.view">
+			<field name="name">view.cancel.wizz</field>
+			<field name="model">cancel.wizz</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="reason" placeholder="Reason..."/>
+						<group>
+						</group>
+					</group>
+					<footer>
+						<button name="confirm" type="object" string="Confirm"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>

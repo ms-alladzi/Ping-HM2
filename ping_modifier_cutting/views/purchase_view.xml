@@ -1,0 +1,18 @@
+<odoo>
+	<data>
+		<record id="purchase_order_inherit_form" model="ir.ui.view">
+			<field name="name">purchase.order.inherit.form</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='qty_received']" position="after">
+					<field name="qty_roll_received"/>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/form/sheet/group/group[1]/field[@name='product_id']" position="after">
+					<field name="color_name"/>
+					<field name="quantity_order_roll" required="True"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

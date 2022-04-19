@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_barcode_lot_ping_document">
+	<style type="text/css" media="print">
+		body, html {
+		  height: 100%;
+		}
+		.bg {
+		  /* The image used */
+		  background-color: #008000;
+		  
+		  
+			
+		  /* Full height */
+		  height: 100%;
+		
+		  /* Center and scale the image nicely */
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  background-size: cover;
+		}
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+    	<t t-foreach="docs" t-as="o">
+    		<div class="page">
+			<div >
+				<div class="col-xs-12 mt32">
+					<table cellpadding="2" cellspacing="0">
+                       	<thead><th> </th></thead>
+                       	<tr t-if="o.func_count_print_lot() > 1">
+							<td colspan="2" align="right"><strong>Copy/Duplicate</strong></td>
+						</tr>
+                        <tr>
+                        	<td colspan="2"><img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:300px;height:50px"/></td>
+                        </tr>
+                        <tr>
+                        	<td colspan="2" class="text-center"><span t-field="o.name"/> / <span t-field="o.batch_name"/></td>
+                        </tr>
+                        <tr><td colspan="2" height="10px"></td></tr>
+                        <tr>
+                        	<td><strong>Product Name</strong></td>
+                        	<td>: <span t-field="o.product_id.name"/></td>
+                        </tr>
+                        <tr>
+                        	<td><strong>Receive Date</strong></td>
+                        	<td>: <span t-field="o.receive_date"/></td>
+                        </tr>
+					</table>
+                  </div>
+              </div>
+              
+			</div>
+		</t>
+	<br/>
+</template>
+
+<template id="report_barcode_lot_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_barcode_lot_ping_document"/>
+        </t>
+    </t>
+</template>
+</odoo>

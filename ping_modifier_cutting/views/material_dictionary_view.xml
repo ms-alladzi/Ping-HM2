@@ -1,0 +1,66 @@
+<odoo>
+	<data>
+		<record id="material_dictionary_tree_view" model="ir.ui.view">
+			<field name="name">material.dictionary.tree.view</field>
+			<field name="model">material.dictionary.header</field>
+			<field name="arch" type="xml">
+				<tree string="Material Dictionary">
+					<field name="product_id" />
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="material_dictionary_form_view" model="ir.ui.view">
+			<field name="name">material.dictionary.form.view</field>
+			<field name="model">material.dictionary.header</field>
+			<field name="arch" type="xml">
+				<form string="Material Dictionary">
+					<group>
+						<group>
+							<field name="product_id"/>
+							<field name="name"/>
+						</group>
+						<group>
+							<field name="create_uid" readonly="True"/>
+							<field name="create_date" readonly="True"/>
+						</group>
+					</group>
+					<field name="lines_ids">
+						<tree editable="bottom">
+							<field name="output"/>
+							<field name="material_quantity"/>
+							<field name="quantity"/>
+						</tree>
+						<form>
+							<group>
+								<group>
+									<field name="output"/>
+									<field name="material_quantity"/>
+									<field name="quantity"/>
+								</group>
+								<group>
+									<field name="name"/>
+								</group>
+							</group>
+						</form>
+					</field>
+				</form>
+			</field>
+		</record>
+		
+		
+		<record id="action_material_dictionary" model="ir.actions.act_window">
+            <field name="name">Dictionary</field>
+            <field name="res_model">material.dictionary.header</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="material_dictionary_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+        <menuitem id="menu_material_dictionary" name="Dictionary" parent="ping_modifier_cutting.menu_material" sequence="100" action="action_material_dictionary"/>
+	</data>
+</odoo>

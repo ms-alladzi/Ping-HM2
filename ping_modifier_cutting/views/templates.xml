@@ -1,0 +1,8 @@
+<odoo>
+    <template id="assets_frontend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <!-- points 2 & 3 go here /-->
+            <link href="/ping_modifier_cutting/static/src/css/custom_css.css" rel="stylesheet" type="text/css"/>
+        </xpath>
+    </template>
+</odoo>

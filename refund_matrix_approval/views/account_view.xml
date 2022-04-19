@@ -1,0 +1,67 @@
+<odoo>
+	<data>
+		<record id="invoice_refund_approval_form" model="ir.ui.view">
+            <field name="name">account.invoice.refund.approval.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+            	<button name="action_invoice_open" position="after">
+            		<button name="action_invoice_refund" type="object" states="refund_approve" string="Validate" class="oe_highlight"/>
+            		<button name="action_invoice_refund_cancel" type="object" states="refund_approve" string="Cancel Invoice"/>
+            	</button>
+            	
+            	<xpath expr="//form/sheet/notebook/page[@name='other_info']" position="after">
+            		<page string="Matrix Approval Refund" name="matrix_approval" attrs="{'invisible': [('type','not in',['in_refund','out_refund'])]}">
+            			<group>
+            				<group>
+            					<field name="refund_matrix_approval_conf_id" attrs="{'required': [('type','in',['in_refund','out_refund'])], 'invisible': [('type','not in',['in_refund','out_refund'])]}"/>
+            				</group>
+            				<group></group>
+            				<newline/>
+		            		<field name="allow_refund_approve_ids">
+		            			<tree>
+		            				<field name="user_id"/>
+		            				<field name="approved"/>
+		            				<field name="matrix_selected_line_id" invisible="1"/>
+		            			</tree>
+		            		</field>
+            			</group>
+            		</page>
+            	</xpath>
+            	
+            </field>
+		</record>
+		
+		<record id="invoice_supplier_refund_approval_form" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.refund.approval.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+            	<button name="action_invoice_open" position="after">
+            		<button name="action_invoice_refund" type="object" states="refund_approve" string="Validate" class="oe_highlight"/>
+            		<button name="action_invoice_refund_cancel" type="object" states="refund_approve" string="Cancel Invoice"/>
+            	</button>
+            	
+            	<xpath expr="//form/sheet/notebook/page[2]" position="after">
+            		<page string="Matrix Approval Refund" name="matrix_approval" attrs="{'invisible': [('type','not in',['in_refund','out_refund'])]}">
+            			<group>
+            				<group>
+            					<field name="refund_matrix_approval_conf_id" attrs="{'readonly': [('state','!=','draft')],'required': [('type','in',['in_refund','out_refund'])], 'invisible': [('type','not in',['in_refund','out_refund'])]}"/>
+            				</group>
+            				<group></group>
+            				<newline/>
+		            		<field name="allow_refund_approve_ids" attrs="{'readonly': [('state','!=','draft')]}">
+		            			<tree>
+		            				<field name="user_id"/>
+		            				<field name="approved"/>
+		            				<field name="matrix_selected_line_id" invisible="1"/>
+		            			</tree>
+		            		</field>
+            			</group>
+            		</page>
+            	</xpath>
+            </field>
+		</record>
+		
+	</data>
+</odoo>

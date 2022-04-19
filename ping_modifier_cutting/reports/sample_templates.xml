@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_sample_form_ping_document">
+	<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+	<style type="text/css" media="print">
+		@media print {
+	    html, body {
+	        display: block; 
+	        font-family: "Calibri";
+	        margin: 0;
+	    }
+        body {
+        color: #000 !important;
+        font-family: Helvetica, Arial, sans-serif;
+        width: 100mm;
+        }
+        .border-all {
+	        border-top: 1px solid black !important;
+	        border-bottom: 1px solid black !important;
+	        border-left: 1px solid black !important;
+	        border-right: 1px solid black !important;
+        }
+        .border-top {
+	        border-top: 1px solid black !important;
+        }
+        .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+        }
+        .zero_min_height {
+        min-height: 0px !important;
+        }
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+	<div class="page">
+    
+    
+	<div>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<tr t-if="o.func_count_print_sample() > 1">
+				<td colspan="2" align="right"><strong>Copy/Duplicate</strong></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span t-field="o.partner_id.name"/></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span t-field="o.date" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span t-field="o.name"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" height="30px"></td>
+			</tr>
+		</table>
+		<br/>
+		
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<thead>
+				<tr class="border-all" style="font-weight:bold">
+					<td class="text-left">Produk</td>
+					<td class="text-center" colspan="2">Jumlah</td>
+					<td class="text-right">Batch</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="border-all" >
+					<td><span t-field="o.product_id.name" width="50%"/> <span t-esc="o.product_id.color_name.name and '('+o.product_id.color_name.name+')' or ''"/></td>
+					<td class="text-right" width="15%"><span t-field="o.quantity"/></td>
+					<td class="text-left" width="15%">&#160;<span t-field="o.product_type"/></td>
+					<td class="text-right" width="20%"><span t-field="o.batch_name"/></td>
+				</tr>
+				<tr class="border-all"><td colspan="4" height="20px"></td></tr>
+			</tbody>
+		</table>
+		<br/>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<tr>
+				<td width="30%">Location</td>
+				<td>: <span t-field="o.location_id"/></td>
+			</tr>
+			<tr>
+				<td>Requestor</td>
+				<td>: <span t-field="o.requestor"/></td>
+			</tr>
+		</table>
+		
+	</div>
+	</div>
+	<br/>
+</template>
+
+<template id="report_sample_form_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_sample_form_ping_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

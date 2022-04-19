@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	 <record id="view_sale_order_search" model="ir.ui.view">
+	        <field name="name">sale.order.search</field>
+	        <field name="model">sale.order</field>
+	        <field name="arch" type="xml">
+	            <search >
+	               
+	                <field name="invoice_status"/>
+	                
+	                <group expand="0" string="Group By">
+	                    <filter name="group_invoice_status" string="Invoice Status" domain="[]" context="{'group_by':'invoice_status'}"/>
+	                    
+	                </group>
+	            </search>
+	        </field>
+	    </record>
+	    <record model="ir.ui.view" id="view_sale_order_kanban">
+	            <field name="name">sale.order.kanban</field>
+	            <field name="model">sale.order</field>
+	            <field name="arch" type="xml">
+	                
+                <kanban class="o_kanban_mobile" create="0">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="amount_total"/>
+                    <field name="date_order"/>
+                    <field name="state"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <strong><span><t t-esc="record.partner_id.value"/></span></strong>
+                                    </div>
+                                    <div class="col-xs-6 pull-right text-right">
+                                        <strong><field name="amount_total" widget="monetary"/></strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 text-muted">
+                                      
+                                        <span><t t-esc="record.name.value"/> <t t-esc="record.date_order.value"/></span>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <span class="pull-right text-right">
+                                            <field name="state" widget="kanban_label_selection" options="{'classes': {'draft': 'default', 'cancel': 'default',                                             'done': 'success'}}"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            
+	            </field>
+	        </record>
+	    
+       <record id="action_sale_order_view" model="ir.actions.act_window">
+              <field name="name">Order Display</field>
+              <field name="type">ir.actions.act_window</field>
+              <field name="res_model">sale.order</field>
+              <field name="view_type">form</field>
+              <field name="view_mode">kanban</field>
+              <field name="view_id" eval="view_sale_order_kanban"/>
+              <field name="search_view_id" eval="view_sale_order_search"/>
+              <field name="context">{'search_default_group_invoice_status':1}</field>
+              <field name="domain">[('invoice_status','!=','invoiced'),('sales_channel','=','offline')]</field>
+              <field name="help" type="html">
+                  <p class="oe_view_nocontent_create">
+                      Click to create a new Sale Order.
+                  </p>
+              </field>
+          </record>
+         <menuitem id="menu_sale_order_item"  name="Order Display"  parent="sales_team.menu_base_partner"/>
+ <menuitem id="menu_sale_order_item_display"  name="Order Display"  parent="menu_sale_order_item" action="action_sale_order_view"/>
+
+          <record model="ir.ui.view" id="view_sale_order_display_form_view">
+            <field name="name">Sale Order Display Setting</field>
+            <field name="model">sale.order.display</field>
+
+            
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                
+        <form >
+            <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        <button string="Cancel" type="object" name="cancel" class="oe_link" special="cancel"/>
+                    </header>
+                    <sheet>
+                    <group string="Sale Order Display Setting">
+                       
+                      
+                            <field name="order_display_time" required="1"/>
+                             <field name="no_of_items" required="1"/>
+                    </group>
+                     </sheet>
+ <footer>
+                </footer>
+                </form>
+                
+
+            </field>
+        </record>
+
+        <record id="action_sale_order_display_setting" model="ir.actions.act_window">
+            <field name="name">Setting</field>
+            <field name="res_model">sale.order.display</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+                        <field name="target">inline</field>
+
+            <field name="view_id" eval="False"/>
+            
+        </record>
+        <!-- SettingMenu -->
+        
+        <menuitem action="action_sale_order_display_setting" name="Setting" parent="menu_sale_order_item" id="sale_order_display_setting_form"
+                  sequence="10"/>
+
+</odoo>

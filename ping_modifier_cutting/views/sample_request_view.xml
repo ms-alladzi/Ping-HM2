@@ -1,0 +1,179 @@
+<odoo>
+	<data>
+		
+		<record id="sample_request_tree_view" model="ir.ui.view">
+			<field name="name">sample.request.tree.view</field>
+			<field name="model">sample.request</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<tree string="Sample Request">
+					<field name="name" />
+					<field name="date" />
+					<field name="partner_id" />
+					<field name="requestor" />
+					<field name="product_id" />
+					<field name="lot_id" />
+					<field name="location_id" />
+					<field name="user_id" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="sample_request_form_view" model="ir.ui.view">
+			<field name="name">sample.request.form.view</field>
+			<field name="model">sample.request</field>
+			<field name="arch" type="xml">
+				<form string="Cutting">
+					<header>
+						<!-- <button name="start_cutting" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+						<button name="finish_cutting" states="start" string="Finish" type="object" class="oe_highlight" />
+						<field name="state" widget="statusbar"/> -->
+					</header>
+					<sheet>
+						<div class="oe_title">
+	                        <h1><field name="name" placeholder="Reference" nolabel="1"/></h1>
+	                    </div>
+						<group>
+							<group>
+								<field name="partner_id" />
+								<field name="requestor" />
+								<field name="mobile"/>
+								<field name="quantity" invisible="True"/>
+								<field name="quantity_order"/>							
+								<field name="count_print_sample" invisible="1"/>								
+							</group>
+							<group>
+								<field name="user_id"/>
+								<field name="date" />
+								<button name="open_search_product" type="object" string="Search Product" class="btn-primary"/>
+							</group>
+						</group>
+						<table border="0" width="100%" cellpadding="0">
+							<thead>
+								<tr border="0" width="100%" cellpadding="0" bgcolor="#ededed" style="padding: 20px; background-color: #ededed; border-collapse:separate;">
+									<td>Product</td>
+									<td>Color Group</td>
+									<td>Color</td>
+									<td>Type Product</td>
+									<td>Batch</td>
+									<td attrs="{'invisible': [('product_type','!=','piece')]}">Product Lot</td>
+									<td>Qty</td>
+									<td>Locatioin</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><field name="product_id"/></td>
+									<td><field name="color_group_id"/></td>
+									<td><field name="color_name"/></td>
+									<td><field name="product_type"/></td>
+									<td><field name="batch_name"/></td>
+									<td attrs="{'invisible': [('product_type','!=','piece')]}"><field name="lot_id"/></td>
+									<td><field name="qty_batch"/></td>
+									<td><field name="location_id" /></td>
+								</tr>							
+							</tbody>
+						</table>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_sample_request" model="ir.actions.act_window">
+            <field name="name">Sample Request</field>
+            <field name="res_model">sample.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="sample_request_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+        <menuitem id="menu_sample_request" name="Sample Request" parent="ping_modifier_cutting.menu_material" sequence="90" action="action_sample_request"/>
+
+
+
+		<!-- ###Wizard Search Product -->
+		<record id="view_sample_request_wizz_form" model="ir.ui.view">
+			<field name="name">view.sample.request.wizz.form</field>
+			<field name="model">sample.request.wizz</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="product_type"/>
+								<field name="product_id"/>
+								<field name="color_group_id"/>
+								<field name="color_name"/>
+								<field name="location_id" domain="[('branch_id','=',filter_branch_id)]"/>
+								<field name="filter_branch_id" invisible="True"/>
+								<field name="type_menu" invisible="False"/>
+							</group>
+							<group>
+								<field name="quantity_roll" attrs="{'invisible': [('product_type','!=','roll')]}"/>
+								<field name="quantity_order"/>
+								<field name="quantity" invisible="True"/>
+							</group>
+						</group>
+						<newline/>
+						<separator string="Pieces (Tolerance +/- 0.9 Kg)" attrs="{'invisible' : ['|',('see_more','=',True),('see_more3','=',True)]}"/>
+	           			<field name="product_lot_ids1" attrs="{'invisible' : ['|',('see_more','=',True),('see_more3','=',True)]}">
+	           				<tree editable="bottom">
+	           					<field name="selected"/>
+	           					<field name="product_lot_id" invisible="1"/>
+	           					<field name="batch_name"/>
+	           					<field name="lot_name"/>
+	           					<field name="qty_batch"/>
+	           					<field name="available_qty"/>
+	           					<field name="location_id"/>
+	           					<field name="type"/>
+	           				</tree>
+	           			</field>
+						<label for="see_more" attrs="{'invisible' : [('see_more','=',True)]}"/>
+						<field name="see_more" attrs="{'invisible' : [('see_more','=',True)]}"/>
+	           			<newline/>
+	           			<label for="see_more3" attrs="{'invisible' : [('see_more','!=',True)]}"/>
+	           			<field name="see_more3" attrs="{'invisible' : [('see_more','!=',True)]}"/>
+	           			<newline/>
+	           			<separator string="Pieces" attrs="{'invisible' : ['|',('see_more','!=',True),('see_more3','=',True)]}"/>
+	           			<field name="product_lot_ids2" attrs="{'invisible' : ['|',('see_more','!=',True),('see_more3','=',True)]}">
+	           				<tree editable="bottom">
+	           					<field name="selected"/>
+	           					<field name="product_lot_id" invisible="1"/>
+	           					<field name="batch_name"/>
+	           					<field name="lot_name"/>
+	           					<field name="qty_batch"/>
+	           					<field name="available_qty"/>
+	           					<field name="location_id"/>
+	           					<field name="type"/>
+	           				</tree>
+	           			</field>
+	           			<separator string="Roll" attrs="{'invisible' : [('see_more3','!=',True)]}"/>
+	           			<field name="product_lot_ids3" attrs="{'invisible' : [('see_more3','!=',True)]}">
+	           				<tree editable="bottom">
+	           					<field name="selected"/>
+	           					<field name="product_lot_id" invisible="1"/>
+	           					<field name="batch_name"/>
+	           					<field name="lot_name"/>
+	           					<field name="qty_batch"/>
+	           					<field name="available_qty_show_only"/>
+	           					<field name="location_id"/>
+	           					<field name="type"/>
+	           				</tree>
+	           			</field>
+					</sheet>
+					<footer>
+	            		<button name="process" type="object" string="Confirm"/>
+	            	</footer>
+
+				</form>
+			</field>				
+		</record>
+				
+					
+					
+
+	</data>
+</odoo>

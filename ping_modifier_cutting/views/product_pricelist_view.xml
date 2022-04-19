@@ -1,0 +1,14 @@
+<odoo>
+	<data>
+		<record id="product_pricelist_item_form_lot_view" model="ir.ui.view">
+            <field name="name">product.pricelist.item.lot.form</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+            	<field name="categ_id" position="after">
+            		<field name="lot_id" attrs="{'invisible':[('applied_on', '!=', '4_lot')], 'required':[('applied_on', '=', '4_lot')]}"/>
+            	</field>
+            </field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,41 @@
+<odoo>
+<template id="external_layout_ping">
+    <!-- Multicompany -->
+    <t t-if="not o and doc">
+        <t t-set="o" t-value="doc"/>
+    </t>
+    <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"></t>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"></t>
+    </t>
+
+    <t t-call="ping_modifier_cutting.external_layout_header_ping" />
+    <t t-raw="0" />
+    <t t-call="report.external_layout_footer" />
+</template>
+
+<template id="external_layout_header_ping">
+    <div class="header">
+        <div class="row">
+            <div class="col-xs-2">
+                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 45px;"/>
+            </div>
+            <div class="col-xs-7" name="company_address">
+                <span t-field="company.partner_id"
+                    t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    style="display:inline-block;"/>
+            </div>
+            <div class="col-xs-3 text-right" style="margin-top:20px;">Invoices</div>
+        </div>
+        <div class="row zero_min_height">
+            <div class="col-xs-12">
+                <div style="border-bottom: 1px solid black;"></div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+</odoo>

@@ -1,0 +1,70 @@
+<odoo>
+	<data>
+		<record id="view_stock_location_inherit_form" model="ir.ui.view">
+            <field name="name">stock.location.inherit.form</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+            	<field name="return_location" position="after">
+            		<field name="branch_id"/>
+            	</field>
+            </field>
+		</record>
+
+		<record id="view_picking_inherit_ping_form" model="ir.ui.view">
+            <field name="name">stock.picking.inherit_form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+            	<field name="origin" position="after">
+            		<!-- <field name="do_vendor_date"/> -->
+            		<field name="do_vendor_date" attrs="{'invisible': [('picking_type_code','!=','incoming')], 'required': [('picking_type_code','=','incoming')]}"/>
+            		<field name="do_vendor_ref" attrs="{'invisible': [('picking_type_code','!=','incoming')], 'required': [('picking_type_code','=','incoming')]}"/>
+            		<field name="batch_name" attrs="{'invisible': [('picking_type_code','!=','incoming')], 'required': [('picking_type_code','=','incoming')]}"/>
+            		<field name="invoice_status"/>
+            		<field name="qty_summary"/>
+            		<field name="count_print_internalmove" invisible="1"/>
+            		<field name="count_print_goodsreceive" invisible="1"/>
+            		<field name="count_print_pengambilan" invisible="1"/>
+            		<field name="count_print_deliveryorder" invisible="1"/>
+            		<field name="count_print_retur" invisible="1"/>
+            	</field>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='pack_operation_product_ids']/tree/field[@name='owner_id']" position="attributes">
+            		<attribute name="invisible">True</attribute>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='pack_operation_product_ids']/tree/field[@name='product_id']" position="after">
+            		<field name="color_name"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='pack_operation_product_ids']/tree/field[@name='product_qty']" position="before">
+            		<field name="estimate_qty_roll"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='pack_operation_product_ids']/tree/field[@name='qty_done']" position="before">
+            		<field name="count_qty_lot"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='pack_operation_product_ids']/tree/field[@name='qty_done']" position="after">
+            		<field name="item_checked"/>
+            		<field name="count_print_packbarcode" invisible="1"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='pack_operation_product_ids']/tree/button[@name='show_details']" position="after">
+            		<button name="print_pack_barcode" string="Print Barcode" type="object" icon="fa-print" states="confirmed,assigned,waiting,partially_available,done"/>
+            	</xpath>
+            </field>
+		</record>
+		
+		<record id="view_pack_operation_lot_batch_form" model="ir.ui.view">
+	        <field name="name">stock.pack.operation.lots.batch.form</field>
+	        <field name="model">stock.pack.operation</field>
+	        <field name="inherit_id" ref="stock.view_pack_operation_lot_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="product_id" position="after">
+	        		<field name="count_qty_lot"/>
+	        	</field>
+	        	<!-- <xpath expr="/form/group[2]/field[@name='pack_lot_ids']/tree/field[@name='lot_name']" position="after">
+	        		<field name="batch_name"/>
+	        	</xpath> -->
+	        </field>
+		</record>
+	        
+		
+	</data>
+</odoo>

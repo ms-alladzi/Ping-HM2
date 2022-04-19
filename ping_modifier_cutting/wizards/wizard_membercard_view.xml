@@ -1,0 +1,21 @@
+<odoo>
+	<data>
+		<record id="view_membercard_wizz" model="ir.ui.view">
+			<field name="name">view.membercard.wizz</field>
+			<field name="model">membercard.wizz</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<group>
+							<field name="image" widget='image' class="oe_avatar" options='{"preview_image": "image_medium"}'/>
+							<field name="partner_id"/>
+						</group>
+					</group>
+					<footer>
+						<button name="print_membercard" type="object" string="Print"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <template id="assets_backend2" name="project assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/ping_order_display/static/src/css/style.css"/>
+             
+                <script type="text/javascript" src="/ping_order_display/static/src/js/scripts.js"></script>
+            </xpath>
+        </template>
+</odoo>

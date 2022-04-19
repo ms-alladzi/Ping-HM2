@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_quotation_form_ping_document3">
+	<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+	<style type="text/css" media="print">
+		@media print {
+	    html, body {
+	        display: block; 
+	        font-family: "Calibri";
+	        margin: 0;
+	    }
+        body {
+        color: #000 !important;
+        font-family: Helvetica, Arial, sans-serif;
+        width: 100mm;
+        }
+        .border-all {
+	        border-top: 1px solid black !important;
+	        border-bottom: 1px solid black !important;
+	        border-left: 1px solid black !important;
+	        border-right: 1px solid black !important;
+        }
+        .border-top {
+	        border-top: 1px solid black !important;
+        }
+        .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+        }
+        .zero_min_height {
+        min-height: 0px !important;
+        }
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+	<div class="page">
+    
+    
+	<div>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<tr t-if="o.func_count_print_quotation() > 1">
+				<td colspan="2" align="right"><strong>Copy/Duplicate</strong></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span t-field="o.partner_id.name"/></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span t-field="o.date_order" t-field-options='{"format": "dd/mm/yyyy"}'/></td>
+			</tr>
+			<tr>
+				<td width="30%">No. Sales Order</td>
+				<td width="70%">: <span t-field="o.name"/></td>
+			</tr>
+			<tr>
+				<td>Nama Pemesan</td>
+				<td>: <span t-field="o.order_contact_name"/></td>
+			</tr>
+			<tr>
+				<td>Tlp.</td>
+				<td>: <span t-field="o.order_contact_mobile"/></td>
+			</tr>
+		</table>
+		<br/>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<thead>
+				<strong>
+				<tr style="font-weight:bold">
+					<td>Produk</td>
+					<td colspan="2" class="text-center">Jumlah</td>
+					<td class="text-right">Total</td>
+				</tr>
+				</strong>
+			</thead>
+			<tbody>
+				<t t-foreach="o.order_line" t-as="line">
+					<tr>
+						<td ><span t-field="line.product_id.name"/></td>
+						<td class="text-right"><span t-field="line.product_uom_qty"/></td>
+						<td class="text-left">&#160; <span t-field="line.product_uom.name"/></td>
+						<td class="text-right"><span t-field="line.price_subtotal"/></td>
+					</tr>
+				</t>
+			</tbody>
+		</table>
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+        	<tr class="border-black">
+        		<td class="text-right">
+                    <span t-field="o.amount_total"
+                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                </td>
+        	</tr>
+        </table>
+		
+		<table cellpadding="2" cellspacing="0" style="width: 100mm;">
+			<tr>
+				<td>Jumlah Qty</td>
+				<td><span t-field="o.qty_summary"/></td>
+			</tr>
+			<tr>
+				<td>DP Min</td>
+				<td>: <span t-field="o.downpayment_amount_min" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+			</tr>
+			<tr>
+				<td>DP Max</td>
+				<td>: <span t-field="o.downpayment_amount_max" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+			</tr>
+			<tr>
+				<td>Location pickup</td>
+				<td>: <span t-field="o.pickup_location"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" height="30px"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">Terima Kasih</td>
+			</tr>
+		</table>		
+		
+		
+		
+	</div>
+	</div>
+	<br/>
+</template>
+
+<template id="report_quotation_form_ping3">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_quotation_form_ping_document3" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

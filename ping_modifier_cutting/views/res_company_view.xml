@@ -1,0 +1,78 @@
+<odoo>
+	<data>
+		<record id="view_company_ping_form" model="ir.ui.view">
+            <field name="name">res.company.ping.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//form/sheet/notebook/page[1]" position="after">
+            		<page string="PING Configuration" name="ping_configuration">
+            			<group>
+            				<group>
+            					<separator string="Downpayment"/>
+            					<newline/>
+            					<field name="minimum_downpayment"/>
+            					<field name="maximum_downpayment"/>
+            				</group>
+            				<group>
+            				</group>
+            			</group>
+            			<group>
+            				<group>
+            					<separator string="Handling Fee"/>
+            					<newline/>
+            					<field name="handling_fee_product_id"/>
+            				</group>
+            				<group>
+            					<separator string="Rounding"/>
+            					<newline/>
+            					<field name="rounding_product_id"/>
+            				</group>
+            			</group>
+            			<group>
+            				<group>
+            					<separator string="Delivery"/>
+            					<newline/>
+            					<field name="delivery_product_id"/>
+            				</group>
+            				<group>
+            					<separator string="Free Delivery Min.Order"/>
+            					<newline/>
+            					<field name="minimum_order_amount"/>
+            				</group>
+            			</group>
+            			<field name="handling_fee_conf_ids" nolabel="True">
+           					<tree editable="bottom">
+           						<field name="min"/>
+           						<field name="max"/>
+           						<field name="handling_fee_amount"/>
+           					</tree>
+           				</field>
+           				<newline/>
+           				<group>
+           					<separator string="Transformation Settings"/>
+           					<group>
+           						<field name="transformation_loc_src_id"/>
+           						<field name="scrap_loc_dst_id"/>
+           						<field name="return_transformation_loc_src_id"/>
+           						
+           						<field name="cutting_loc_src_id"/>
+           						<field name="cutting_loc_dst_id"/>
+           						<field name="cutting_loc_dst_special_id"/>
+           					</group>
+           					<group></group>
+           				</group>
+           				<newline/>
+           				<group>
+           					<separator string="Membership Settings"/>
+           					<group>
+           						<field name="reprint_membercard_product_id"/>
+           					</group>
+           					<group></group>
+           				</group>
+            		</page>
+            	</xpath>
+            </field>
+		</record>
+	</data>
+</odoo>

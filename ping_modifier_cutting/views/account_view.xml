@@ -1,0 +1,21 @@
+<odoo>
+	<data>
+		<record id="invoice_ping_form" model="ir.ui.view">
+            <field name="name">account.invoice.ping.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+            	
+            	<field name="partner_id" position="after">
+            		<field name="reference" string="Customer Reference"/>
+            		<field name="bank_account_id" domain="[('partner_id','=',partner_id)]"/>
+            	</field>
+            	<field name="team_id" position="after">
+            		<field name="delivery_label" attrs="{'invisible' : [('delivery_label','!=','free')]}" readonly="True" style="color: #e60000; font-size:200%;" colspan="2" nolabel="1"/>
+            		<field name="user_paid_id"/>
+            		<field name="count_print_invoice" invisible="1"/>
+            	</field>
+            </field>
+		</record>
+	</data>
+</odoo>

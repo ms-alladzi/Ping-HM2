@@ -1,0 +1,9 @@
+.test_button {
+	width:100%;
+	color:white;
+	background:red;
+	padding:10px;
+}
+.hide_card {
+	display:none !important;
+}

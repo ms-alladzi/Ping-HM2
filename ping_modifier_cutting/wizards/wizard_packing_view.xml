@@ -1,0 +1,40 @@
+<odoo>
+	<data>
+		<record id="view_packing_wizz_form" model="ir.ui.view">
+			<field name="name">view.packing.wizz.form</field>
+			<field name="model">packing.wizz</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<group>
+							<field name="name" placeholder="e.g Pack-0001"/>
+							<field name="product_id" domain="[('for_packing','=',True)]"/>
+							<field name="sale_id"/>
+							<field name="so_partner_id"/>
+							<field name="so_name"/>
+							<field name="cutting_id" invisible="0" readonly="1"/>
+							<field name="cutting_date" readonly="1"/>
+						</group>
+						<group></group>
+						<separator string="Items" />
+						<field name="cutting_line" domain="[('cutting_id','=',cutting_id),('packing_product_id','=',False)]">
+							<tree>
+								<field name="lot_id" />
+								<field name="quantity_done" />
+							</tree>
+							<form>
+								<group>
+									<field name="lot_id" />
+									<field name="quantity_done"/>
+								</group>
+							</form>
+						</field>
+					</group>
+					<footer>
+						<button name="packing_process" type="object" string="Packing"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>

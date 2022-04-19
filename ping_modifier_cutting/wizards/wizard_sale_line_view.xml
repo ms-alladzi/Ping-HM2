@@ -1,0 +1,71 @@
+<odoo>
+	<data>
+		<!-- ###Wizard Search Product -->
+		<record id="view_sale_line_search_wizz_form" model="ir.ui.view">
+			<field name="name">view.sale.line.search.wizz.form</field>
+			<field name="model">sale.line.search.wizz</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="product_type"/>
+								<field name="product_id"/>
+							</group>
+							<group>
+								<field name="quantity_order"/>
+								<field name="quantity"/>
+								<field name="sale_line_id"/>
+							</group>
+						</group>
+						<newline/>
+						<separator string="Pieces (Tolerance +/- 0.9 Kg)" attrs="{'invisible' : ['|',('see_more','=',True),('see_more3','=',True)]}"/>
+	           			<field name="product_lot_ids1" attrs="{'invisible' : ['|',('see_more','=',True),('see_more3','=',True)]}">
+	           				<tree editable="bottom">
+	           					<field name="selected"/>
+	           					<field name="product_lot_id"/>
+	           					<field name="available_qty"/>
+	           					<field name="location_id"/>
+	           					<field name="type"/>
+	           				</tree>
+	           			</field>
+						<label for="see_more" attrs="{'invisible' : [('see_more','=',True)]}"/>
+						<field name="see_more" attrs="{'invisible' : [('see_more','=',True)]}"/>
+	           			<newline/>
+	           			<label for="see_more3" attrs="{'invisible' : [('see_more','!=',True)]}"/>
+	           			<field name="see_more3" attrs="{'invisible' : [('see_more','!=',True)]}"/>
+	           			<newline/>
+	           			<separator string="Pieces" attrs="{'invisible' : ['|',('see_more','!=',True),('see_more3','=',True)]}"/>
+	           			<field name="product_lot_ids2" attrs="{'invisible' : ['|',('see_more','!=',True),('see_more3','=',True)]}">
+	           				<tree editable="bottom">
+	           					<field name="selected"/>
+	           					<field name="product_lot_id"/>
+	           					<field name="available_qty"/>
+	           					<field name="location_id"/>
+	           					<field name="type"/>
+	           				</tree>
+	           			</field>
+	           			<separator string="Roll" attrs="{'invisible' : [('see_more3','!=',True)]}"/>
+	           			<field name="product_lot_ids3" attrs="{'invisible' : [('see_more3','!=',True)]}">
+	           				<tree editable="bottom">
+	           					<field name="selected"/>
+	           					<field name="product_lot_id"/>
+	           					<field name="available_qty"/>
+	           					<field name="location_id"/>
+	           					<field name="type"/>
+	           				</tree>
+	           			</field>
+					</sheet>
+					<footer>
+	            		<button name="process" type="object" string="Confirm"/>
+	            	</footer>
+
+				</form>
+			</field>				
+		</record>
+				
+					
+					
+
+	</data>
+</odoo>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<!-- Thermal -->
+    	<record id="paperformat_thermal" model="report.paperformat">
+			<field name="name">Thermal Printer</field>
+			<field name="default" eval="True" />
+			<field name="format">custom</field>
+			<field name="page_height">200</field>
+			<field name="page_width">80</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">5</field>
+			<field name="margin_bottom">5</field>
+			<field name="margin_left">5</field>
+			<field name="margin_right">5</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">35</field>
+			<field name="dpi">90</field>
+		</record>
+
+    	<!-- Thermal -->
+    	<record id="paperformat_membercard" model="report.paperformat">
+			<field name="name">Membercard</field>
+			<field name="default" eval="True" />
+			<field name="format">custom</field>
+			<field name="page_height">90</field>
+			<field name="page_width">55</field>
+			<field name="orientation">Landscape</field>
+			<field name="margin_top">0</field>
+			<field name="margin_bottom">0</field>
+			<field name="margin_left">0</field>
+			<field name="margin_right">0</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">0</field>
+			<field name="dpi">90</field>
+		</record>
+   
+    	<!-- Barcode -->
+    	<record id="paperformat_barcode" model="report.paperformat">
+			<field name="name">Barcode 100 x 50</field>
+			<field name="default" eval="True" />
+			<field name="format">custom</field>
+			<field name="page_height">80</field>
+			<field name="page_width">35</field>
+			<field name="orientation">Landscape</field>
+			<field name="margin_top">0</field>
+			<field name="margin_bottom">0</field>
+			<field name="margin_left">0</field>
+			<field name="margin_right">0</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">0</field>
+			<field name="dpi">90</field>
+		</record>
+
+    	<!-- Barcode -->
+    	<record id="paperformat_barcode_2" model="report.paperformat">
+			<field name="name">Barcode 100 x 50</field>
+			<field name="default" eval="True" />
+			<field name="format">custom</field>
+			<field name="page_height">80</field>
+			<field name="page_width">60</field>
+			<field name="orientation">Landscape</field>
+			<field name="margin_top">0</field>
+			<field name="margin_bottom">0</field>
+			<field name="margin_left">0</field>
+			<field name="margin_right">0</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">0</field>
+			<field name="dpi">90</field>
+		</record>
+    	
+		<!-- Quotation -->    	
+        <report 
+            string="Ping Quotation"
+            id="report_quotationform_ping3" 
+            model="sale.order" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_quotation_form_ping3" 
+            file="ping_modifier_cutting.report_quotation_form_ping3"
+            paperformat="ping_modifier_cutting.paperformat_thermal"
+            />
+            
+		<!-- Goods Receive -->
+        <report 
+            string="Ping Goods Receive"
+            id="report_goodsreceiveform_ping" 
+            model="stock.picking" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_goodsreceive_form_ping" 
+            file="ping_modifier_cutting.report_goodsreceive_form_ping"
+            paperformat="ping_modifier_cutting.paperformat_thermal"
+            />
+		
+            
+        <!-- Internal Move -->
+        <report 
+            string="Ping Internal Move"
+            id="report_internalmoveform_ping" 
+            model="stock.picking" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_internalmove_form_ping" 
+            file="ping_modifier_cutting.report_internalmove_form_ping"
+            paperformat="ping_modifier_cutting.paperformat_thermal"
+            />
+
+        <!-- Delicery Order -->
+        <report 
+            string="Ping Delivey Order"
+            id="report_deliveryform_ping" 
+            model="stock.picking" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_delivery_form_ping" 
+            file="ping_modifier_cutting.report_delivery_form_ping"
+            paperformat="ping_modifier_cutting.paperformat_thermal"
+            />
+
+        <!-- Courier Delicery Order -->
+        <report 
+            string="Ping Courier Delivey Order"
+            id="report_courier_deliveryform_ping" 
+            model="delivery.request" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_courier_delivery_form_ping" 
+            file="ping_modifier_cutting.report_courier_delivery_form_ping"
+            paperformat="ping_modifier_cutting.paperformat_thermal"
+            />
+
+        <!-- Sample Request -->
+        <report 
+            string="Ping Sample Request"
+            id="report_sampleform_ping" 
+            model="sample.request" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_sample_form_ping" 
+            file="ping_modifier_cutting.report_sample_form_ping"
+            paperformat="ping_modifier_cutting.paperformat_thermal"
+            />
+
+        <!-- Member Card -->
+        <report 
+            string="Member Card"
+            id="report_membercard_ping" 
+            model="res.partner" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_member_card_ping" 
+            file="ping_modifier_cutting.report_member_card_ping"
+            paperformat="ping_modifier_cutting.paperformat_membercard"
+            />
+       
+        <!-- Barcode Lot -->
+        <report 
+            string="Barcode Lot"
+            id="report_barcodelot_ping" 
+            model="stock.production.lot" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_barcode_lot_ping" 
+            file="ping_modifier_cutting.report_barcode_lot_ping"
+            paperformat="ping_modifier_cutting.paperformat_barcode"
+            />
+        <!-- Barcode Stock Pack Operation -->
+        <report 
+            string="Barcode Pack Operation"
+            id="report_packoperation_ping" 
+            model="stock.pack.operation" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_pack_operation_ping" 
+            file="ping_modifier_cutting.report_pack_operation_ping"
+            paperformat="ping_modifier_cutting.paperformat_barcode"
+            />
+
+        <!-- Invoice -->
+        <report 
+            string="Invoices Ping"
+            id="report_invoiceform_ping" 
+            model="account.invoice" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_invoice_form_ping" 
+            file="ping_modifier_cutting.report_invoice_form_ping"
+            paperformat="report.paperformat_euro"
+            />
+
+        <!-- Customer Deposit -->
+        <report 
+            string="Customer Deposit Ping"
+            id="report_customer_depositform_ping" 
+            model="account.payment" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_customer_deposit_form_ping" 
+            file="ping_modifier_cutting.report_customer_deposit_form_ping"
+            paperformat="report.paperformat_euro"
+            />
+            
+		<!-- Delicery Order A4 -->
+        <report 
+            string="Ping Delivey Order A4"
+            id="report_deliveryformA4_ping" 
+            model="stock.picking" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_deliveryA4_form_ping" 
+            file="ping_modifier_cutting.report_deliveryA4_form_ping"
+            paperformat="report.paperformat_euro"
+            />
+
+		<!-- Courier Delicery A4 -->
+        <!-- <report 
+            string="Ping Courier Delivey A4"
+            id="report_courier_deliveryformA4_ping" 
+            model="delivery.request" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_courier_deliveryA4_form_ping" 
+            file="ping_modifier_cutting.report_courier_deliveryA4_form_ping"
+            paperformat="report.paperformat_euro"
+            /> -->
+            
+		<!-- Delicery Order Retur A4 -->
+        <report 
+            string="Ping Retur A4"
+            id="report_returformA4_ping" 
+            model="stock.picking" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_returA4_form_ping" 
+            file="ping_modifier_cutting.report_returA4_form_ping"
+            paperformat="report.paperformat_euro"
+            />
+            
+		<!-- Delicery Order Pengambilan Barang Thermal -->
+        <report 
+            string="Ping Pengambilan"
+            id="report_pengambilanform_ping" 
+            model="stock.picking" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_pengambilan_form_ping" 
+            file="ping_modifier_cutting.report_pengambilan_form_ping"
+            paperformat="ping_modifier_cutting.paperformat_thermal"
+            />
+
+		<!-- Delicery Order Pengambilan Barang A4 -->
+        <!-- <report 
+            string="Ping Pengambilan A4"
+            id="report_pengambilanformA4_ping" 
+            model="stock.picking" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_pengambilanA4_form_ping" 
+            file="ping_modifier_cutting.report_pengambilanA4_form_ping"
+            paperformat="report.paperformat_euro"
+            /> -->
+            
+		<!-- Barcode Asset -->
+        <report 
+            string="Barcode Asset"
+            id="report_barcodeasset_ping" 
+            model="account.asset.asset" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_barcode_asset_ping" 
+            file="ping_modifier_cutting.report_barcode_asset_ping"
+            paperformat="ping_modifier_cutting.paperformat_barcode"
+            />
+
+		<!-- Barcode Packing -->
+        <report 
+            string="Barcode Packing"
+            id="report_barcodepacking_ping" 
+            model="packing.product" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_barcode_packing_ping" 
+            file="ping_modifier_cutting.report_barcode_packing_ping"
+            paperformat="ping_modifier_cutting.paperformat_barcode"
+            />
+
+		<!-- Barcode Multi Packing-->
+        <report 
+            string="Barcode Multi Packing"
+            id="report_barcodemultipacking_ping" 
+            model="material.cutting" 
+            report_type="qweb-pdf"
+            name="ping_modifier_cutting.report_barcode_multipacking_ping" 
+            file="ping_modifier_cutting.report_barcode_multipacking_ping"
+            paperformat="ping_modifier_cutting.paperformat_barcode_2"
+            />
+    </data>
+</odoo>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_member_card_ping_document">
+	<t t-set="o" t-value="o.with_context({'lang':o.lang})" />
+	<style type="text/css" media="print">
+		body, html {
+		  height: 100%;
+		  weight: 100%;
+		}
+		.bg {
+		  /* The image used */
+		  background-color: #008000;
+		  
+		  
+			
+		  /* Full height */
+		  height: 100%;
+		  weight: 100%;
+		
+		  /* Center and scale the image nicely */
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  background-size: cover;
+		}
+		    
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+	<body style="font-size:15px;">
+		<div class="page">
+		
+
+	    	<div>
+		    	
+				    
+				    <div >
+					    <div class="row">
+					    	<table cellpadding="2" cellspacing="0" style="width: 100%; position:absolute; z-index:1;" border="1">
+					    		<div style="position:absolute;z-index:1;">
+					    			<img t-attf-src="data:image/*;base64,{{o.image_background_membercard_medium}}" 
+								    		 t-field-options="{'widget': 'image'}" 
+								    		 class="backgroundimage" 
+								    		 style="display: block;position:absolute;opacity:1.0;font-size:10px;
+								    		 		width:402px;height:245px;
+								    		 		padding: 0.0px; margin: 0.0px; "/>
+								</div>
+							</table>
+					    	
+					    	<table cellpadding="2" cellspacing="0" style="width: 100%; position:absolute; z-index:2;" border="1">
+					    		<tr>
+					    			<td colspan="4" >
+					    				
+					    			
+					    			</td>
+					    		</tr>
+					    		<tr>
+					    			<td colspan="4" height="130px">&#160;</td>
+					    		</tr>
+					    		<tr>
+					    			<td style="padding: 5px;"><strong><span t-field="o.name"/></strong></td>
+					    			<td>&#160;</td>
+					    			<td colspan="2"><strong><span t-field="o.membership_product_id.name"/></strong></td>
+					    		</tr>
+					    		<tr >
+					    			<td style="padding: 5px;"><strong><span t-field="o.membership_number"/></strong></td>
+					    			<td>&#160;</td>
+					    			<td colspan="2"><strong><span t-field="o.membership_start"/> - <span t-field="o.membership_stop"/></strong></td>
+					    		</tr>
+	                		</table>
+	                	</div>
+                	</div>
+			</div>
+		</div>
+	</body>
+	<br/>
+</template>
+
+<template id="report_member_card_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_member_card_ping_document" t-lang="o.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_customer_deposit_form_ping_document">
+	<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+	<style type="text/css" media="print">
+		@media print {
+	    html, body {
+	        display: block; 
+	        font-family: "Calibri";
+	        margin: 0;
+	    }
+        body {
+        color: #000 !important;
+        font-family: Helvetica, Arial, sans-serif;
+        width: 100mm;
+        }
+        .border-all {
+	        border-top: 1px solid black !important;
+	        border-bottom: 1px solid black !important;
+	        border-left: 1px solid black !important;
+	        border-right: 1px solid black !important;
+        }
+        .border-top {
+	        border-top: 1px solid black !important;
+        }
+        .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+        }
+        .zero_min_height {
+        min-height: 0px !important;
+        }
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+	
+	<t t-call="report.html_container">
+    	<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+          <div class="header">
+	        <div class="row">
+	            <div class="col-xs-2">
+	                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 45px;"/>
+	            </div>
+	            <div class="col-xs-7" name="company_address">
+	                <span t-field="o.company_id.partner_id"
+	                    t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+	                    style="display:inline-block;"/>
+	            </div>
+	            <div class="col-xs-3 text-right" style="margin-top:20px;">Customer Deposit</div>
+	        </div>
+	        <div class="row zero_min_height">
+	            <div class="col-xs-12">
+	                <div style="border-bottom: 1px solid black;"></div>
+	            </div>
+	        </div>
+	    </div>
+	
+	
+	
+        <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+        <div class="page">
+			<div t-if="o.func_count_print_deposit() > 1" class="row">
+            	<div class="col-xs-12" align="right"><strong>Copy/Duplicate</strong></div>
+            </div>
+			
+            <div class="row">
+                <div name="invoice_address" class="col-xs-4">
+                    <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                    <span t-if="o.partner_id.vat">TIN: <span t-field="o.partner_id.vat"/></span>
+                </div>
+                <div class="col-xs-4"> </div>
+                <div class="col-xs-4"><strong>Deposit Number : </strong><span t-field="o.name"/></div>
+            </div>
+
+            <div class="row">
+            	<div class="col-xs-3"><strong>SO Number</strong></div>
+            	<div class="col-xs-3">: <span t-field="o.sale_id.name"/></div>
+            </div>
+            <div class="row">
+            	<div class="col-xs-3"><strong>Order Date</strong></div>
+            	<div class="col-xs-3">: <span t-field="o.payment_date"/></div>
+            </div>
+            <div class="row">
+            	<div class="col-xs-3"><strong>Payment Term</strong></div>
+            	<div class="col-xs-3">: <span t-field="o.sale_id.payment_term_id.name"/></div>
+            </div>
+
+			<div class="row">
+				<div class="col-xs-12"> &#160; </div>
+			</div>
+			
+            <!-- Is there a discount on at least one line? -->
+            <t t-set="display_discount" t-value="any([l.discount_amount for l in o.sale_id.order_line])"/>
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th class="text-right">Qty</th>
+                        <th class="text-right">Unit Price</th>
+                        <th t-if="display_discount" class="text-right">Disc.(%)</th>
+                        <th class="text-right">Taxes</th>
+                        <th class="text-right">Amount Total</th>
+                    </tr>
+                </thead>
+                <tbody class="invoice_tbody">
+                    <tr t-foreach="o.sale_id.order_line" t-as="l">
+                        <td><span t-field="l.name"/></td>
+                        <td class="text-right">
+                            <span t-field="l.product_uom_qty"/>
+                            <span t-field="l.product_uom.name"/>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="l.price_unit"/>
+                        </td>
+                        <td t-if="display_discount" class="text-right">
+                            <span t-field="l.discount"/>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="', '.join(map(lambda x: (x.name), l.tax_id))"/>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="l.price_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.sale_id.currency_id}"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="row">
+            	<div class="col-xs-2"><strong>Rekening</strong></div>
+				<div class="col-xs-3">: </div>
+                <div class="col-xs-4 pull-right">
+                    <table class="table table-condensed">
+                        <tr class="border-black">
+                            <td><strong>Subtotal</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.sale_id.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.sale_id.currency_id}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Taxes</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.sale_id.amount_tax" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.sale_id.currency_id}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Downpayment</strong></td>
+                            <td class="text-right">
+                                <span t-esc="-o.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.sale_id.currency_id}"/>
+                            </td>
+                        </tr>
+                        <tr class="border-black">
+                            <td><strong>Total</strong></td>
+                            <td class="text-right">
+                                 <span t-esc="o.sale_id.amount_total-o.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.sale_id.currency_id}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <table>
+            	<tr>
+            		<td width="15%">Checked By</td>
+            		<td width="5%"></td>
+            		<td width="15%">Verified By</td>
+            		<td width="65%"> &#160; </td>
+            	</tr>
+            	<tr>
+            		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black; height:70px"> &#160; </td>
+            		<td></td>
+            		<td style="text-align: left;color:#B22222; border-top:none; border-bottom:2px solid black;"> &#160; </td>
+            		<td></td>
+            	</tr>
+            </table>
+            
+        </div>
+    </t>
+	
+</template>
+
+<template id="report_customer_deposit_form_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_customer_deposit_form_ping_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

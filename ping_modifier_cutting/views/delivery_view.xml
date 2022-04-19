@@ -1,0 +1,102 @@
+<odoo>
+	<data>
+		<record id="delivery_request_tree_view" model="ir.ui.view">
+			<field name="name">delivery.request.tree.view</field>
+			<field name="model">delivery.request</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<tree string="Pickup">
+					<field name="name" />
+					<field name="date" />
+					<field name="requestor_name" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="delivery_request_form_view" model="ir.ui.view">
+			<field name="name">delivery.request.form.view</field>
+			<field name="model">delivery.request</field>
+			<field name="arch" type="xml">
+				<form string="Pickup Request">
+					<header>
+						<button name="confirm" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<div class="oe_title">
+	                        <h1><field name="name" placeholder="Cutting Order Reference" nolabel="1"/></h1>
+	                    </div>
+						<group>
+							<group>
+								<field name="partner_id" />
+								<field name="date" />
+								<field name="requestor_name" />
+								<field name="company_id" />
+								<field name="count_print_delivery" invisible="1"/>
+							</group>
+							<group>
+								<separator string="Invoices"/>
+								<field name="invoice_ids" domain="[('partner_id','=',partner_id),('state','=','paid')]" nolabel="1" colspan="4">
+			            			<tree>
+			            				<field name="number"/>
+			            				<field name="date_invoice"/>
+			            				<field name="amount_total"/>
+			            				<field name="state"/>
+			            			</tree>
+			            		</field>
+
+								<separator string="Sale Orders"/>
+								<field name="delivery_sale_ids" nolabel="1" colspan="4">
+			            			<tree>
+			            				<field name="name"/>
+			            				<field name="state"/>
+			            			</tree>
+			            		</field>
+							</group>
+						</group>
+						<notebook>
+							<page name="delivery" string="Courier and Delivery">
+								<group>
+									<group>
+										<separator string="Detail Courier" colspan="2"/>
+										<field name="courier_id"/>
+										<field name="fleet_id"/>
+										<label for="street" string="Delivery Address"/>
+					                    <div class="o_address_format">
+					                        <field name="street" placeholder="Street..." class="o_address_street"/>
+					                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+					                        <field name="kecamatan_id" class="o_address_city"/>
+					                        <field name="city" placeholder="City" class="o_address_city"/>
+					                    </div>
+					                    <button name="check_tarif" type="object" string="Check Tarif" colspan="2"/>
+									</group>
+									<group>
+										<separator string="Billing" colspan="2"/>
+										<field name="zone_id"/>
+										<field name="delivery_fee"/>
+										<field name="invoice_id"/>
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_delivery_request" model="ir.actions.act_window">
+            <field name="name">Delivery Request</field>
+            <field name="res_model">delivery.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="delivery_request_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+        <menuitem id="menu_delivery" name="Delivery" parent="ping_modifier_cutting.menu_pickup_delivery" sequence="1" action="action_delivery_request"/>
+	
+	</data>
+</odoo>

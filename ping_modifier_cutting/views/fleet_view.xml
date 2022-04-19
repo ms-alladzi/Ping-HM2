@@ -1,0 +1,58 @@
+<odoo>
+	<data>
+		<record id="delivery_zone_tree_view" model="ir.ui.view">
+			<field name="name">delivery.zone.tree.view</field>
+			<field name="model">delivery.zone</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<tree string="Pickup">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="delivery_zone_form_view" model="ir.ui.view">
+			<field name="name">delivery.zone.form.view</field>
+			<field name="model">delivery.zone</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<form string="Pickup">
+					<sheet>
+						<div class="oe_title">
+	                        <h1><field name="name" placeholder="Delivery Zone" nolabel="1"/></h1>
+	                    </div>
+						<group>
+							<separator string="Coverage Area" colspan="2"/>
+							<field name="coverage_area_ids" nolabel="1">
+								<tree>
+									<field name="name"/>
+								</tree>
+							</field>
+							<separator string="Price List" colspan="2"/>
+							<field name="lines" nolabel="1">
+								<tree editable="bottom">
+									<field name="fleet_id"/>
+									<field name="unit_price"/>
+								</tree>
+							</field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_delivery_zone" model="ir.actions.act_window">
+            <field name="name">Delivery Zone</field>
+            <field name="res_model">delivery.zone</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="delivery_zone_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+		<menuitem id="menu_delivery_zone" name="Delivery Zone" parent="ping_modifier_cutting.menu_pickup_delivery" sequence="1" action="action_delivery_zone"/>
+		
+	</data>
+</odoo>

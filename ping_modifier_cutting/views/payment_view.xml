@@ -1,0 +1,84 @@
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="form_view_account_payment_deposit_sale">
+	        <field name="name">account.payment.deposit.sale</field>
+	        <field name="model">account.payment</field>
+	        <field name="inherit_id" ref="account_deposit.form_view_account_payment_deposit"/>
+	        <field name="arch" type="xml">
+	        	<field name="writeoff_account_id" position="attributes">
+	        		<attribute name="domain">[('reconcile','=',True),('user_type_id.type','=','receivable')]</attribute>
+	        	</field>
+	        	<field name="journal_id" position="after">
+	        		<field name="journal_type_id"/>
+	        		<field name="count_print_deposit" invisible="1"/>
+	        	</field>
+	        	<field name="partner_id" position="before">
+	        		<field name="sale_id"/>
+	        		<field name="downpayment_amount_min"/>
+	        		<field name="downpayment_amount_max"/>
+	        		
+	        		<field name="image_payment_attachment" string="Upload Payment" filename="payment_attachment_name" readonly="False"/>
+					<field name="payment_attachment_name" invisible="1"/>
+	        	</field>
+	        	<field name="amount" position="after">
+	        		<field name="amount_receipt" required="True" attrs="{'invisible': [('journal_type_id','!=','cash')]}"/>
+	        		<field name="amount_change" required="True" attrs="{'invisible': [('journal_type_id','!=','cash')]}"/>
+	        	</field>
+			</field>
+		</record>
+		
+		<!-- ##Wizard Register Payment## -->
+		<record id="view_account_payment_invoice_ping_form" model="ir.ui.view">
+            <field name="name">account.payment.invoice.ping.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="arch" type="xml">
+            	<field name="payment_method_code" position="after">
+            		<field name="amount_receipt" 
+            			attrs="{'required' : [('payment_type','=','inbound'),('partner_type','=','customer')], 
+            			        'invisible' : ['|',('payment_type','!=','inbound'),('partner_type','!=','customer')]}"/>
+            	</field>
+            	<xpath expr="//form/sheet/group[1]/group[1]/div[@name='amount_div']" position="after">
+            		<field name="amount_change" 
+            			attrs="{'required' : [('payment_type','=','inbound'),('partner_type','=','customer')], 
+            			        'invisible' : ['|',('payment_type','!=','inbound'),('partner_type','!=','customer')]}"/>
+            	</xpath>
+            </field>
+		</record>
+		
+		<record model="ir.ui.view" id="view_supplier_payment_inherit_form">
+	        <field name="name">receipt.payment.supplier.payment.inherit.form</field>
+	        <field name="model">receipt.payment</field>
+	        <field name="inherit_id" ref="sg_partner_payment.view_supplier_payment_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="amount" position="attributes">
+	        		<attribute name="readonly">True</attribute>
+	        	</field>
+	        	<xpath expr="//form/sheet/notebook/page[1]/field[@name='line_cr_ids']/tree/field[@name='amount']" position="attributes">
+	        		<attribute name="class">oe_read_only</attribute>
+	        	</xpath>
+	        	<xpath expr="//form/sheet/notebook/page[1]/field[@name='line_dr_ids']/tree/field[@name='amount']" position="attributes">
+	        		<attribute name="class">oe_read_only</attribute>
+	        	</xpath>
+	        </field>
+		</record>
+		
+		<record model="ir.ui.view" id="view_supplier_payment_form_inherit_extend">
+	        <field name="name">receipt.payment.supplier.payment.inherit.form</field>
+	        <field name="model">receipt.payment</field>
+	        <field name="inherit_id" ref="giro_std.view_supplier_payment_form_extend"/>
+	        <field name="arch" type="xml">
+	        	<field name="amount" position="attributes">
+	        		<attribute name="readonly">True</attribute>
+	        	</field>
+	        	<xpath expr="//form/sheet/notebook/page[1]/field[@name='line_cr_ids']/tree/field[@name='amount']" position="attributes">
+	        		<attribute name="class">oe_read_only</attribute>
+	        	</xpath>
+	        	<xpath expr="//form/sheet/notebook/page[1]/field[@name='line_dr_ids']/tree/field[@name='amount']" position="attributes">
+	        		<attribute name="class">oe_read_only</attribute>
+	        	</xpath>
+	        </field>
+		</record>
+		
+	</data>
+</odoo>

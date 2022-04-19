@@ -1,0 +1,57 @@
+<odoo>
+	<data>
+		<record id="cutting_operator_tree_view" model="ir.ui.view">
+			<field name="name">cutting.operator.tree.view</field>
+			<field name="model">cutting.operator</field>
+			<field name="arch" type="xml">
+				<tree string="Cutting">
+					<field name="sequence" />
+					<field name="name" />
+					<field name="branch_id" />
+					<field name="order_number" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="cutting_operator_form_view" model="ir.ui.view">
+			<field name="name">cutting.operator.form.view</field>
+			<field name="model">cutting.operator</field>
+			<field name="arch" type="xml">
+				<form string="Cutting">
+					<header>
+						<button name="ready" type="object" states="draft" string="Ready" class="oe_highlight"/>
+						<button name="standby" type="object" states="ready" string="Stand By" class="oe_highlight"/>
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="sequence" />
+								<field name="name" />
+							</group>
+							<group>
+								<field name="branch_id" />
+								<field name="order_number" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_cutting_operator" model="ir.actions.act_window">
+            <field name="name">Cutting</field>
+            <field name="res_model">cutting.operator</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="cutting_operator_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+        <menuitem id="menu_cutting_operator" name="Cutting Operator" parent="ping_modifier_cutting.menu_material" sequence="1" action="action_cutting_operator"/>
+        
+		
+	</data>
+</odoo>

@@ -1,0 +1,337 @@
+<odoo>
+	<data>
+		<!-- #####   Vendor   #### -->
+		<menuitem name="Vendor" id="menu_product_vendor_conf" parent="purchase.menu_product_in_config_purchase" sequence="100"/>
+		
+		<!-- Master Conf Vendor Initial -->
+		<record id="action_product_vendor_initial" model="ir.actions.act_window">
+            <field name="name">Vendor Initial</field>
+            <field name="res_model">vendor.initial</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_vendor_initial" string="Vendor Initial" id="menu_product_vendor_initial" parent="menu_product_vendor_conf" sequence="100"/>
+		<!-- ######################## -->
+
+		<!-- Master Conf Vendor Original -->
+		<record id="action_product_vendor_original_name" model="ir.actions.act_window">
+            <field name="name">Vendor Product Original Name</field>
+            <field name="res_model">vendor.material.original.name</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_vendor_original_name" string="Vendor Product Original Name" id="menu_product_vendor_original_name" parent="menu_product_vendor_conf" sequence="100"/>
+		<!-- ######################## -->
+		<!-- Master Conf Vendor Material Type -->
+		<record id="action_product_vendor_material_type" model="ir.actions.act_window">
+            <field name="name">Vendor Product Material Type</field>
+            <field name="res_model">product.material.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_vendor_material_type" string="Vendor Material Type" id="menu_product_vendor_material_type" parent="menu_product_vendor_conf" sequence="100"/>
+		<!-- ######################## -->
+		<!-- Master Conf Color Group -->
+		<record id="action_product_vendor_color_group" model="ir.actions.act_window">
+            <field name="name">Vendor Color Group</field>
+            <field name="res_model">vendor.product.color.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_vendor_color_group" string="Vendor Color Group" id="menu_product_vendor_color_group" parent="menu_product_vendor_conf" sequence="100"/>
+		<!-- ######################## -->
+		<!-- Master Conf Color Group -->
+		<record id="action_product_vendor_color" model="ir.actions.act_window">
+            <field name="name">Vendor Color</field>
+            <field name="res_model">vendor.product.color</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_vendor_color" string="Vendor Color" id="menu_product_vendor_color" parent="menu_product_vendor_conf" sequence="100"/>
+		<!-- ######################## -->
+		<!-- Master Conf Color Group -->
+		<record id="action_product_vendor_material_specification" model="ir.actions.act_window">
+            <field name="name">Vendor Material Specification</field>
+            <field name="res_model">product.vendor.material.specification</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_vendor_material_specification" string="Vendor Material Specification" id="menu_product_vendor_material_specification" parent="menu_product_vendor_conf" sequence="100"/>
+		<!-- ######################## -->
+		
+		<!-- Master Conf Product -->
+		<record id="action_product_material" model="ir.actions.act_window">
+            <field name="name">Wide Specification</field>
+            <field name="res_model">product.material</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_material" string="Material" id="menu_product_material" parent="purchase.menu_product_in_config_purchase" sequence="100"/>
+
+		<record id="action_product_material_type" model="ir.actions.act_window">
+            <field name="name">Material Type</field>
+            <field name="res_model">product.material.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_material_type" string="Material Type" id="menu_product_material_type" parent="purchase.menu_product_in_config_purchase" sequence="101"/>
+		
+		<record id="action_product_material_specification" model="ir.actions.act_window">
+            <field name="name">Gramasi Specification</field>
+            <field name="res_model">product.material.specification</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_material_specification" string="Gramasi specification" id="menu_product_material_specification" parent="purchase.menu_product_in_config_purchase" sequence="101"/>
+		
+		<record id="action_product_material_code" model="ir.actions.act_window">
+            <field name="name">Material Code</field>
+            <field name="res_model">product.material.code</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_id" ref="product_category_secondary_tree_view"/> -->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_material_code" string="Material Code" id="menu_product_material_code" parent="purchase.menu_product_in_config_purchase" sequence="102"/>
+		
+		<record id="action_product_color" model="ir.actions.act_window">
+            <field name="name">Ping Color</field>
+            <field name="res_model">product.color</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_color" string="Material Color" id="menu_product_color" parent="purchase.menu_product_in_config_purchase" sequence="103"/>
+
+		<record id="action_product_color_group" model="ir.actions.act_window">
+            <field name="name">Ping Color Group</field>
+            <field name="res_model">product.color.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		
+        <menuitem action="action_product_color_group" string="Material Color Group" id="menu_product_color_group" parent="purchase.menu_product_in_config_purchase" sequence="103"/>
+		
+		
+		
+		<!-- ################### -->
+		<record id="product_product_tree_view" model="ir.ui.view">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="arch" type="xml">
+            	<field name="name" position="after">
+            		<field name="color_group_id"/>
+            		<field name="color_name"/>
+            	</field>
+            	<field name="barcode" position="attributes">
+            		<attribute name="invisible">True</attribute>
+            	</field>
+            </field>
+        </record>
+		
+		<record id="product_template_ping_form_view" model="ir.ui.view">
+			<field name="name">product.template.product.ping.form</field>
+			<field name="model">product.template</field>
+			<field name="priority" eval="8" />
+			<field name="inherit_id" ref="product.product_template_form_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/div[2]/div" position="inside">
+					<div>
+                        <field name="for_packing"/>
+                        <label for="for_packing"/>
+                    </div>
+				</xpath>
+				<xpath expr="//form/header/button" position="after">
+					<button name="action_propose" states="draft" string="Submit" type="object" class="oe_highlight" groups="ping_modifier_cutting.group_product_submit_ping"/>
+					<button name="action_approve" states="propose" string="Approve" type="object" class="oe_highlight" groups="ping_modifier_cutting.group_product_approve_ping"/>
+					<button name="action_cancel" states="propose,approve" string="Cancel" type="object" class="oe_highlight" groups="ping_modifier_cutting.group_product_approve_ping"/>
+					<button name="action_set_to_draft" states="cancel" string="Set to Draft" type="object" class="oe_highlight" groups="ping_modifier_cutting.group_product_submit_ping"/>
+					<field name="state" widget="statusbar"/>
+				</xpath>
+				<field name="type" position="after">
+					<field name="sales_type" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="material_name" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="material_code" placeholder="e.g DFT455" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="material_type" placeholder="e.g Polyester" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="material_specification" placeholder="e.g 36/190-200" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="weight_type" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="color_group_id" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="color_name" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="procurement_status" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="categ_secondary_id" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+				</field>
+				<field name="list_price" position="after">
+					<field name="list_price_roll" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="discount_list_price_roll" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="list_price_pieces" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="discount_list_price_pieces" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="list_price_bundling" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="discount_list_price_bundling" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+					<field name="branch_ids" required="True" widget="many2many_tags" attrs="{'readonly': [('state','!=','draft')]}"/>
+				</field>
+				<field name="list_price" position="attributes">
+					<attribute name="attrs">{'invisible': [('type','=','product')], 'readonly': [('state','!=','draft')]}</attribute>
+				</field>
+				
+				<page name="sales" position="after">
+					<page string="Vendors" name="vendors" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}">
+						<group>
+							<group>
+								<field name="vendor_id" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+								<field name="vendor_initial" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+								<field name="vendor_original_name" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+								<field name="vendor_material_name" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+								<field name="vendor_kg_roll" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+							</group>
+							<group>
+								<field name="vendor_color_group_id" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+								<field name="vendor_color_name" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+								<field name="vendor_material_specification" attrs="{'invisible': [('type','!=','product')], 'required': [('type','=','product')], 'readonly': [('state','!=','draft')]}"/>
+							</group>
+						</group>
+					</page>
+					<page string="Dictionary" name="dictionary">
+						<field name="material_dictionary_ids">
+							<field name="lines_ids">
+								<tree editable="bottom">
+									<field name="output" />
+									<field name="material_quantity" />
+									<field name="quantity" />
+								</tree>
+								<form>
+									<group>
+										<group>
+											<field name="product_id"/>
+											<field name="name"/>
+										</group>
+										<group>
+											<field name="create_uid" readonly="True"/>
+											<field name="create_date" readonly="True"/>
+										</group>
+									</group>
+									<field name="lines_ids">
+										<tree editable="bottom">
+											<field name="output"/>
+											<field name="material_quantity"/>
+											<field name="quantity"/>
+										</tree>
+										<form>
+											<group>
+												<group>
+													<field name="output"/>
+													<field name="material_quantity"/>
+													<field name="quantity"/>
+												</group>
+												<group>
+													<field name="name"/>
+												</group>
+											</group>
+										</form>
+									</field>
+								</form>
+							</field>
+						</field>
+						<newline/>
+						<group>
+							<field name="note_detail" placeholder="e.g Details Materials"/>
+						</group>
+					</page>
+				</page>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="membership_products_ping_form">
+            <field name="name">Membership Products</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="membership.membership_products_form"/>
+            <field name="arch" type="xml">
+            	<field name="list_price" position="after">
+            		<field name="membership_cutting_sequence"/>
+            	</field>
+            </field>
+		</record>
+		
+		<!-- Product Category Secondary -->
+		<record id="product_category_secondary_tree_view" model="ir.ui.view">
+			<field name="name">product.category.secondary.tree.view</field>
+			<field name="model">product.category.secondary</field>
+			<field name="arch" type="xml">
+				<tree string="Category Secondary">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="action_product_category_secondary" model="ir.actions.act_window">
+            <field name="name">Product Categories Secondary</field>
+            <field name="res_model">product.category.secondary</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="product_category_secondary_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+        <menuitem action="action_product_category_secondary" string="Product Categories Secondary" id="menu_product_secondary" parent="sale.prod_config_main" sequence="100"/>
+		
+		<!-- ### ### -->
+		<record id="product_supplierinfo_form_inherit_view" model="ir.ui.view">
+            <field name="name">product.supplierinfo.inherit.form.view</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//form/group/group[1]" position="before">
+            		<h3>
+            			<field name="reference" required="True"/>
+            		</h3>
+            		<newline/>
+            	</xpath>
+            </field>
+		</record>
+		
+	</data>
+</odoo>

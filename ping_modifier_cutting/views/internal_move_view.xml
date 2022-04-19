@@ -1,0 +1,107 @@
+<odoo>
+	<data>
+		<record id="internal_move_tree_view" model="ir.ui.view">
+			<field name="name">internal.move.tree.view</field>
+			<field name="model">internal.move</field>
+			<field name="arch" type="xml">
+				<tree string="Cutting">
+					<field name="date" />
+					<field name="sale_id" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="internal_move_form_view" model="ir.ui.view">
+			<field name="name">internal.move.form.view</field>
+			<field name="model">internal.move</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; 
+					created_date;"> -->
+				<form string="Internal Move">
+					<header>
+						<button name="confirm_assign" states="draft" string="Confirm" type="object" class="oe_highlight" />
+						<!-- <button name="finish_cutting" states="start" string="Finish"
+							type="object" class="oe_highlight" /> -->
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<field name="name" placeholder="Internal Move" nolabel="1" />
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="date" />
+								<field name="sale_id" />
+								<field name="company_id" />
+								<field name="branch_id" />
+							</group>
+							<group>
+							</group>
+						</group>
+						<newline/>
+						<field name="move_lines">
+							<tree >
+								<field name="product_id"/>
+								<field name="name"/>
+								<field name="product_uom_qty"/>
+								<field name="product_uom" options="{'no_open': True, 'no_create': True}" groups="product.group_uom"/>
+								<field name="location_id"/>
+								<field name="location_dest_id"/>
+								<field name="state"/>
+								<button name="action_assign" type="object" string="Check" states="confirmed"/>
+								<button name="action_done" type="object" string="Done" states="assigned"/>
+							</tree>
+							<form editable="bottom">
+								<group>
+									<group>
+										<field name="product_id"/>
+										<field name="name"/>
+										<field name="product_uom_qty"/>
+										<field name="product_uom" options="{'no_open': True, 'no_create': True}" groups="product.group_uom"/>
+									</group>
+									<group>
+										<field name="location_id"/>
+										<field name="location_dest_id"/>
+										<field name="state"/>
+									</group>
+									<newline/>
+									<field name="active_move_lot_ids">
+			                            <tree editable="bottom">
+			                                <field name="product_id"/>
+			                                <field name="lot_id"/>
+			                                <field name="quantity"/>
+			                                <field name="quantity_done"/>
+			                                <!-- <field name=""/> -->
+			                            </tree>
+			                        </field>								
+								</group>
+								<footer>
+									<button name="action_assign" type="object" string="Check" states="confirmed"/>
+									<button name="action_done" type="object" string="Done" states="assigned"/>
+								</footer>
+							</form>
+							
+						</field>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_internal_move" model="ir.actions.act_window">
+            <field name="name">Internal Move</field>
+            <field name="res_model">internal.move</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="internal_move_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+        <menuitem id="menu_internal_move" name="Internal Move" parent="menu_material" sequence="1" action="action_internal_move"/>
+								
+	</data>
+</odoo>

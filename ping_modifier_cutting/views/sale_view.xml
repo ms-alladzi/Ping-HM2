@@ -1,0 +1,429 @@
+<odoo>
+	<data>
+		<record id="view_order_cutting_form" model="ir.ui.view">
+            <field name="name">sale.order.cutting.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//button[@name='action_view_invoice']" position="before">
+            		<div class="oe_button_box" name="button_box">
+                        <button name="action_view_internal_move" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('internal_move_count', '=', 0)]}">
+                            <field name="internal_move_count" widget="statinfo" string="Internal Move"/>
+                        </button>
+                    </div>
+            	</xpath>
+            	
+            	<button name="action_cancel" position="attributes">
+            		<attribute name="invisible">True</attribute>
+            	</button>
+            	<field name="state" position="before">
+            		<button name="cancel_reason" states="draft,sent,sale" type="object" string="Cancel" groups="ping_modifier_cutting.group_sale_cancel"/>
+            	</field>
+            	
+            	<xpath expr="//form/header/button[5]" position="attributes">
+            		<attribute name="states">quotation</attribute>
+            	</xpath>
+            	<xpath expr="//form/header/button[6]" position="attributes">
+            		<attribute name="invisible">True</attribute>
+            	</xpath>
+            	
+            	<button name="action_confirm" position="attributes">
+            		<attribute name="invisible">True</attribute>
+            	</button>
+            	
+            	<button name="action_quotation_send" position="after">
+            		<button name="quotation" states="draft" type="object" string="Quotation" class="btn-primary"/>
+            		<button name="confirm_order" states="quotation" type="object" string="Confirm Order" class="btn-primary"/>
+            		<button name="check_double_order" states="draft" type="object" string="Double Order ?" class="btn-success"/>
+            		<button name="confirm_and_invoice" type="object" string="Create Invoice" class="btn-success" attrs="{'invisible': ['|',('state','!=','cutting_ordered'),('ready_invoiced','!=',True)]}"/>
+            		<!-- <button name="create_internal_move" type="object" string="Create Internal Move" class="btn-success"/> -->
+            		<!-- <button name="create_request_cutting" type="object" string="Cutting Request" class="btn-success"/> -->
+            	</button>
+            	
+            	<button name="action_cancel" position="attributes">
+            		<attribute name="states">draft,sent,sale,quotation,cutting_ordered</attribute>
+            	</button>
+            	
+            	<!-- <button name="action_confirm" position="attributes">
+            		<attribute name="state">reserved</attribute>
+            	</button> -->
+            	
+            	<field name="partner_shipping_id" position="after">
+            		<field name="order_contact_name" required="True" placeholder="e.g Budi Susanto"/>
+            		<field name="order_contact_mobile" required="True" placeholder="e.g 081912345678"/>
+            		<label for="street" string="Address"/>
+                    <div class="o_address_format">
+                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="city" placeholder="City" class="o_address_city"/>
+                    </div>
+                    <field name="customer_scoring" style="color: #e60000" attrs="{'invisible' : [('customer_scoring','!=','bad')]}"/>
+            		<field name="ready_invoiced"/>
+            		<field name="sale_status"/>
+            		<field name="count_print_quotation" invisible="1"/>
+            	</field>
+            	
+            	<field name="pricelist_id" position="after">
+            		<field name="delivery_type"/>
+            	</field>
+            	<field name="payment_term_id" position="after">
+            		<!-- #DIganti dari Module Branch -->
+            		<!-- <field name="branch_id" required="1"/> -->
+            		<field name="sales_channel" required="1"/>
+            		<field name="sample_check"/>
+            		<field name="cutting_order_id"/>
+            		<field name="downpayment_percent_min"/>
+            		<field name="downpayment_percent_max"/>
+            		<field name="qty_summary"/>
+            		<!-- <field name="pickup_location" /> -->
+            		<field name="internal_move_ids" invisible="True"/>
+            		<div colspan="2">
+            			<button name="open_check_product" type="object" string="Check Product" class="btn-primary"/>
+            		</div>
+            		<field name="warning_error" invisible="1"/>
+            	</field>
+            	
+            	<field name="order_line" position="attributes">
+					<attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+            	</field>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree" position="attributes">
+            		<attribute name="create">false</attribute>
+            	</xpath>
+            	
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_id']" position="before">
+            		<field name="cutting" invisible="True"/>
+            		<button name="open_search_product" attrs="{'invisible': ['|',('state','!=','cutting_process'),('cutting','!=','yes')]}" 
+            				type="object" string="Search Product" icon="fas fa-cut" groups="ping_modifier_cutting.group_sale_cutting_revisi"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+            		<field name="quantity_order"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_uom']" position="before">
+            		<field name="quantity_order_roll"/> 
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_uom']" position="after">
+            		<field name="sale_order_line_lots_count"/> 
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="attributes">
+            		<attribute name="string"></attribute>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/form/group/group/field[@name='price_subtotal']" position="after">
+            		<field name="quantity_order_roll" attrs="{'invisible' : [('type','!=','roll')]}"/>
+            		<field name="quantity_order"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/form/group/group/label[1]" position="attributes">
+            		<attribute name="string"></attribute>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[1]/field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
+            		<field name="discount_amount"/>
+            		<field name="pickup_location_id" required="True"/>
+            	</xpath>
+            	
+            	<field name="product_id" position="after">
+            		<field name="color_name"/>
+            		<field name="type" required="True"/>
+            		<field name="cutting" required="True"/>
+            	</field>
+            	<field name="analytic_tag_ids" position="after">
+            		<field name="sale_order_line_lots" domain="[('product_id','=',product_id),('type','=',type)]" nolabel="1" colspan="4">
+            			<tree>
+            				<field name="name"/>
+            				<field name="available_qty" invisible="1"/>
+            				<field name="booked_qty"/>
+            				<field name="location_id"/>
+            			</tree>
+            		</field>
+            		<button name="create_cutting_line" string="Cutting Line" type="object" attrs="{'invisible' : [('state','!=','draft')]}"/>
+            	</field>
+            	
+            	<field name="note" position="after">
+					<group>
+						<field name="terms_check" required="True"/>
+						<field name="reason"/>
+					</group>
+            	</field>
+            	<field name="amount_total" position="after">
+            		<field name="downpayment_amount_min"/>
+            		<field name="downpayment_amount_max"/>
+            	</field>
+            </field>
+		</record>
+		
+		<!--###Quotation Tree### -->
+		<record id="view_quotation_ping_tree" model="ir.ui.view">
+            <field name="name">sale.order.ping.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+            	<field name="state" position="before">
+            		<field name="invoice_status"/>
+            	</field>
+            </field>
+        </record>
+		
+		<!--###Offline### -->
+		<record id="action_quotations_offline" model="ir.actions.act_window">
+            <field name="name">Quotations Offline</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'hide_sale': True,'default_sales_channel': 'offline','sales_channel': 'offline'}</field>
+            <field name="domain">[('sales_channel','=','offline')]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Create a Quotation Offline, the first step of a new sale.
+              </p><p>
+                Your next actions should flow efficiently: confirm the Quotation
+                to a Sale Order, then create the Invoice and collect the Payment.
+              </p><p>
+                Note that once a Quotation becomes a Sale Order, it will be moved
+                from the Quotations list to the Sales Order list.
+              </p>
+            </field>
+        </record>
+        <menuitem id="menu_sale_quotations_offline"
+                action="action_quotations_offline" parent="sales_team.menu_sales"
+                sequence="11"/>
+                
+      	<!--###Whatsapp### -->
+		<record id="action_quotations_whatsapp" model="ir.actions.act_window">
+            <field name="name">Quotations Online</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'hide_sale': True,'default_sales_channel': 'whatsapp','sales_channel': 'whatsapp'}</field>
+            <field name="domain">[('sales_channel','=','online')]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Create a Quotation Whatsapp, the first step of a new sale.
+              </p><p>
+                Your next actions should flow efficiently: confirm the Quotation
+                to a Sale Order, then create the Invoice and collect the Payment.
+              </p><p>
+                Note that once a Quotation becomes a Sale Order, it will be moved
+                from the Quotations list to the Sales Order list.
+              </p>
+            </field>
+        </record>
+        <menuitem id="menu_sale_quotations_whatsapp"
+                action="action_quotations_whatsapp" parent="sales_team.menu_sales"
+                sequence="11"/>
+        
+        <!--###Marketplace### -->
+		<record id="action_quotations_marketplace" model="ir.actions.act_window">
+            <field name="name">Quotations Marketplace</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'hide_sale': True,'default_sales_channel': 'marketplace','sales_channel': 'marketplace'}</field>
+            <field name="domain">[('sales_channel','=','marketplace')]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Create a Quotation Marketplace, the first step of a new sale.
+              </p><p>
+                Your next actions should flow efficiently: confirm the Quotation
+                to a Sale Order, then create the Invoice and collect the Payment.
+              </p><p>
+                Note that once a Quotation becomes a Sale Order, it will be moved
+                from the Quotations list to the Sales Order list.
+              </p>
+            </field>
+        </record>
+        <menuitem id="menu_sale_quotations_marketplace"
+                action="action_quotations_marketplace" parent="sales_team.menu_sales"
+                sequence="11"/>
+                
+       <!--###Offline### -->         
+       <record id="action_orders_offline" model="ir.actions.act_window">
+            <field name="name">Sales Orders Offline</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{'default_sales_channel': 'marketplace','sales_channel': 'offline'}</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel')),('sales_channel','=','offline')]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create a Quotation Offline, the first step of a new sale.
+                </p><p>
+                    Once the quotation is confirmed, it becomes a sales order.
+                    You'll be able to invoice it and collect payments.
+                    From the <i>Sales Orders</i> menu, you can track delivery
+                    orders or services.
+                </p>
+            </field>
+        </record>
+
+        <menuitem action="action_orders_offline"
+            id="menu_sale_order_offline" parent="sales_team.menu_sales"
+            sequence="12" groups="sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
+            
+       <!--###Whatsapp### -->         
+       <record id="action_orders_whatsapp" model="ir.actions.act_window">
+            <field name="name">Sales Orders Online</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{'default_sales_channel': 'whatsapp','sales_channel': 'whatsapp'}</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel')),('sales_channel','=','whatsapp')]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create a Quotation Whatsapp, the first step of a new sale.
+                </p><p>
+                    Once the quotation is confirmed, it becomes a sales order.
+                    You'll be able to invoice it and collect payments.
+                    From the <i>Sales Orders</i> menu, you can track delivery
+                    orders or services.
+                </p>
+            </field>
+        </record>
+
+        <menuitem action="action_orders_whatsapp"
+            id="menu_sale_order_whatsapp" parent="sales_team.menu_sales"
+            sequence="12" groups="sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
+            
+       <!--###Whatsapp### -->         
+       <record id="action_orders_marketplace" model="ir.actions.act_window">
+            <field name="name">Sales Orders Marketplace</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{'default_sales_channel': 'marketplace','sales_channel': 'marketplace'}</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel')),('sales_channel','=','marketplace')]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create a Quotation Marketplace, the first step of a new sale.
+                </p><p>
+                    Once the quotation is confirmed, it becomes a sales order.
+                    You'll be able to invoice it and collect payments.
+                    From the <i>Sales Orders</i> menu, you can track delivery
+                    orders or services.
+                </p>
+            </field>
+        </record>
+
+        <menuitem action="action_orders_marketplace"
+            id="menu_sale_order_marketplace" parent="sales_team.menu_sales"
+            sequence="12" groups="sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
+		
+		<record id="view_order_line_form" model="ir.ui.view">
+			<field name="name">view.order.line.form</field>
+			<field name="model">sale.order.line</field>
+			<field name="arch" type="xml">
+				<form string="Sales Order Lines">
+					<group>
+						<group>
+							<field name="product_id"/>
+							<field name="layout_category_id"
+								groups="sale.group_sale_layout" />
+							<field name="invoice_status" invisible="1" />
+							<field name="qty_to_invoice" invisible="1" />
+							<field name="qty_delivered_updateable" invisible="1" />
+							<field name="procurement_ids" invisible="1" />
+							<field name="price_subtotal" invisible="1" />
+							<field name="color_group_id"/>
+							<field name="color_name"/>
+							<field name="type"/>
+							<field name="cutting" required="True" attrs="{'invisible': [('type','!=','piece')]}"/>
+							<field name="quantity_order_roll" attrs="{'invisible' : [('type','!=','roll')]}"/>
+							<field name="quantity_order"/>
+							<label for="product_uom_qty" string="Ordered Quantity" invisible="True"/>
+							<div invisible="True">
+								<field name="product_uom_qty" class="oe_inline" invisible="True"/>
+								<field name="product_uom" groups="product.group_uom"
+									class="oe_inline oe_no_button"
+									attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}" invisible="True"/>
+							</div>
+							
+							<field name="price_unit" />
+							<field name="discount_amount"/>
+							<label for="discount"
+								groups="sale.group_discount_per_so_line" />
+							<div name="discount" groups="sale.group_discount_per_so_line">
+								<field name="discount" class="oe_inline" />
+								%
+							</div>
+            				<field name="branch_id" required="1"/>
+							<field name="pickup_location_id" required="True" domain="[('branch_id','=',branch_id)]"/>
+						</group>
+						<group>
+							<field name="tax_id" widget="many2many_tags"
+								domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
+							<label for="customer_lead" />
+							<div>
+								<field name="customer_lead" class="oe_inline" />
+								days
+							</div>
+						</group>
+					</group>
+					<label for="name" invisible="1" />
+					<field name="name" invisible="0" />
+					<field name="state" invisible="1" />
+					<field name="order_id" invisible="1" /> 
+					
+					<newline/>
+					<separator string="Pieces (Tolerance +/- 0.9 Kg)" attrs="{'invisible' : ['|',('see_more','=',True),('see_more3','=',True)]}"/>
+           			<field name="product_lot_ids1" attrs="{'invisible' : ['|',('see_more','=',True),('see_more3','=',True)]}">
+           				<tree editable="bottom" create="false" delete="false">
+           					<field name="selected"/>
+           					<field name="product_lot_id" invisible="1"/>
+           					<field name="batch_name"/>
+           					<field name="lot_name"/>
+           					<field name="available_qty"/>
+           					<field name="location_id"/>
+           					<field name="type"/>
+           				</tree>
+           			</field>
+					<label for="see_more" attrs="{'invisible' : [('see_more','=',True)]}"/>
+					<field name="see_more" attrs="{'invisible' : [('see_more','=',True)]}"/>
+           			<newline/>
+           			<label for="see_more3" attrs="{'invisible' : [('see_more','!=',True)]}"/>
+           			<field name="see_more3" attrs="{'invisible' : [('see_more','!=',True)]}"/>
+           			<newline/>
+           			<separator string="Pieces" attrs="{'invisible' : ['|',('see_more','!=',True),('see_more3','=',True)]}"/>
+           			<field name="product_lot_ids2" attrs="{'invisible' : ['|',('see_more','!=',True),('see_more3','=',True)]}">
+           				<tree editable="bottom" create="false" delete="false">
+           					<field name="selected"/>
+           					<field name="product_lot_id" invisible="1"/>
+           					<field name="batch_name"/>
+           					<field name="lot_name"/>
+           					<field name="available_qty"/>
+           					<field name="location_id"/>
+           					<field name="type"/>
+           				</tree>
+           			</field>
+           			<separator string="Roll" attrs="{'invisible' : [('see_more3','!=',True)]}"/>
+           			<field name="product_lot_ids3" attrs="{'invisible' : [('see_more3','!=',True)]}">
+           				<tree editable="bottom" create="false" delete="false">
+           					<field name="selected"/>
+           					<field name="product_lot_id" invisible="1"/>
+           					<field name="batch_name"/>
+           					<field name="lot_name"/>
+           					<field name="available_qty"/>
+           					<field name="location_id"/>
+           					<field name="type"/>
+           				</tree>
+           			</field>
+					<footer>
+	            		<button name="process" type="object" string="Confirm"/>
+	            	</footer>
+				</form>
+			</field>
+		</record>
+		
+	</data>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_member_card_ping_document">
+	<t t-set="o" t-value="o.with_context({'lang':o.lang})" />
+	<style type="text/css" media="print">
+		@media print {
+	    html, body {
+	        display: block; 
+	        font-family: "Calibri";
+	        margin: 0;
+	    }
+        body {
+        color: #000 !important;
+        font-family: Helvetica, Arial, sans-serif;
+        width: 100mm;
+        }
+        .border-all {
+	        border-top: 1px solid black !important;
+	        border-bottom: 1px solid black !important;
+	        border-left: 1px solid black !important;
+	        border-right: 1px solid black !important;
+        }
+        .border-top {
+	        border-top: 1px solid black !important;
+        }
+        .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+        }
+        .zero_min_height {
+        min-height: 0px !important;
+        }
+        /* YOU CAN ADD YOUR CUSTOM CSS HERE */
+    </style>
+	<div class="page" >
+		<div class="backgroundimage" style="position:absolute;font-size:3em;width:20%;height:10%;z-index:1000;">
+		 <!-- <div class="backgroundimage" style="position:absolute;font-size:3em;width:50px;height:50px;"> -->
+        	<!-- <img t-attf-src="data:image/*;base64,{{o.image_background_membercard_medium}}" t-field-options="{'widget': 'image'}" style="width:324px;height:205px;"/> -->
+        	<!-- <img t-attf-src="data:image/*;base64,{{o.image_background_membercard_medium}}" t-field-options="{'widget': 'image'}" /> -->
+        	<img src="ping_modifier_cutting/static/description/background.jpg"/>
+        	<img class="backgroundimage" src="ping_modifier_cutting/static/description/background.jpg" style="position:absolute;font-size:3em;">
+			<p t-field="o.name"/>
+			<!-- <table cellpadding="2" cellspacing="0" style="width: 85mm;">
+				<tr>
+					<td colspan="2"><span t-field="o.name"/></td>
+				</tr>
+				<tr>
+					<td colspan="2" height="30px"></td>
+				</tr>
+			</table> -->
+		</div>
+	</div>
+	<br/>
+</template>
+
+<template id="report_member_card_ping">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ping_modifier_cutting.report_member_card_ping_document" t-lang="o.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
+

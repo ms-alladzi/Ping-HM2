@@ -1,0 +1,254 @@
+<odoo>
+	<data>
+		
+		<record id="material_cutting_tree_view" model="ir.ui.view">
+			<field name="name">material.cutting.tree.view</field>
+			<field name="model">material.cutting</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<tree string="Cutting">
+					<field name="name" />
+					<field name="date" />
+					<field name="sale_id" />
+					<field name="cutting_order_sequence" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="material_cutting_form_view" model="ir.ui.view">
+			<field name="name">material.cutting.form.view</field>
+			<field name="model">material.cutting</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<form string="Cutting">
+					<header>
+						<button name="start_cutting" states="draft" string="Start" type="object" class="oe_highlight"/>
+						<button name="finish_cutting" states="start" string="Finish" type="object" class="oe_highlight" />
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+	                    <div class="oe_button_box" name="button_box">
+	                    	<button name="action_view_return_move" type="object" 
+	                    		class="oe_stat_button" string="Return Move" icon="fa-pencil-square-o"
+	                    		attrs="{'invisible': [('return_move_count','=',0)]}">
+	                            <!-- <field name="internal_move_count" widget="statinfo" string="Internal Move"/> -->
+	                        </button>
+	                    </div>
+	                    <div class="oe_title">
+	                        <h1><field name="name" placeholder="Cutting Order Reference" nolabel="1"/></h1>
+	                    </div>
+						<group>
+							<group>
+								<field name="date" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="sale_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="operator_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="company_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="branch_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="cutting_order_sequence" />
+							</group>
+							<group>
+								<field name="return_picking_ids" invisible="1"/>
+								<field name="return_move_count" invisible="1"/>
+							</group>
+						</group>
+						<notebook>
+							<page name="transformation" string="Transformation">
+								<field name="move_transformation_ids" nolabel="1">
+									<tree editable="bottom" create="false" delete="false">
+										<field name="product_id"/>
+										<field name="lot_id"  readonly="True"/>
+										<field name="stock_qty"/>
+										<field name="quantity_done" required="True" attrs="{'readonly' : [('move_id','!=',False)]}"/>
+										<field name="move_id" invisible="1"/>
+										<field name="move_state"/>
+										<button name="check_transformation" type="object" string="Check" attrs="{'invisible': [('move_id','!=',False),('move_state', 'not in', ['draft','waiting','confirmed'])]}" class="oe_highlight"/>
+										<button name="process_transformation" type="object" string="Process" attrs="{'invisible': [('move_state', 'not in', ['assigned'])]}" class="oe_highlight"/>
+									</tree>
+								</field>
+							</page>
+							<page name="cutting" string="Cutting">
+								<field name="move_cutting_ids" nolabel="1">
+									<tree create="false" delete="false" editable="bottom">
+										<field name="product_id" readonly="True"/>
+										<field name="src_lot_id" readonly="True"/>
+										<field name="lot_id" readonly="True"/>
+										<field name="quantity_order_related" readonly="True"/>
+										<field name="stock_qty" readonly="True"/>
+										<field name="quantity_done" required="True"/>
+										<field name="move_id" invisible="1"/>
+										<field name="move_state"/>
+										<field name="flag_1" attrs="{'readonly' : [('move_id','!=',False)]}"/>
+										<field name="flag_2" attrs="{'readonly' : [('move_id','!=',False)]}"/>
+										<field name="flag_3" attrs="{'readonly' : [('move_id','!=',False)]}"/>
+										<field name="packing_status" readonly="True"/>
+										<field name="without_cutting" invisible="True"/>
+										<field name="packing_product_id"  readonly="True"/>
+										<button name="check_cutting" type="object" string="Check" attrs="{'invisible': ['|',('packing_status','=','ready'),('move_id','!=',False),('move_state', 'not in', ['draft','waiting','confirmed'])]}" class="oe_highlight"/>
+										<button name="process_cutting" type="object" string="Process" attrs="{'invisible': [('move_state', 'not in', ['assigned'])]}" class="oe_highlight"/>
+										<button name="create_return" type="object" string="Return" attrs="{'invisible': ['|',('return_move_id','!=',False),('move_state', 'not in', ['done'])]}" class="oe_highlight" confirm="Are you sure return this Product ?"/>
+										<field name="return_move_id" invisible="1"/>
+									</tree>
+									<form>
+										<group>
+											<group>
+												<field name="quantity_done" attrs="{'readonly' : [('move_id','!=',False)]}"/>
+											</group>
+											<group>
+												<field name="lot_id"/>
+												<field name="without_cutting"/>
+												<field name="packing_product_id"/>
+											</group>
+											<newline/>
+											<field name="move_ids"/>
+											<field name="move_id" invisible="1"/>
+										</group>
+									</form>
+								</field>
+							</page>
+							<page name="packing" string="Packing" attrs="{'invisible': [('packing_product_ids','=',False)]}">
+								<button name="open_packing" type="object" string="Packing" class="btn-primary"/>
+								<newline/>
+								<group>
+									<field name="netto_weight"/>
+									<field name="bruto_weight"/>								
+								</group>
+								<field name="packing_items_ids" readonly="1">
+									<tree editable="bottom">
+										<field name="product_id"/>
+										<field name="quantity_done"/>
+									</tree>
+								</field>
+								<newline/>
+								<field name="packing_product_ids" readonly="1">
+									<tree>
+										<field name="name"/>
+										<field name="count_print_packing" invisible="1"/>
+										<button name="print_packing_barcode" string="Print Barcode" type="object" icon="fa-print"/>
+									</tree>
+								</field>
+							</page>
+							<!-- <page name="cutting" string="Cutting Materials">
+								<group>
+									<group string="Needs to Cut">
+										<field name="move_material_raw_ids" nolabel="1">
+											<tree>
+												<field name="product_id"/>
+												<field name="product_uom"/>
+												<field name="quantity_available" attrs="{'invisible': [('is_done', '=', True)]}"/>
+			                                    <field name="product_uom_qty" readonly="1" attrs="{'required': [('product_id', '!=', False)]}" string="Qty Ordered"/>
+			                                    <field name="quantity_done" attrs="{'readonly': ['|', ('is_done', '=', True), ('has_tracking', 'in', ['lot','serial'])]}" string="Consumed"/>
+			                                    <field name="state"/>
+			                                    <button name="action_done" type="object" string="Update"/>
+											</tree>
+											<form>
+												<group>
+													<group>
+														<field name="product_id"/>
+														<field name="state"/>
+														<field name="location_id"/>
+														<field name="location_dest_id"/>
+														<field name="name"/>
+													</group>
+													<group>
+														<field name="product_uom"/>
+														<field name="product_uom_qty" readonly="1" attrs="{'required': [('product_id', '!=', False)]}" string="Qty Ordered"/>
+													</group>
+												</group>
+												<field name="active_move_lot_ids">
+													<tree editable="bottom">
+														<field name="product_id"/>
+														<field name="lot_id"/>
+														<field name="quantity"/>
+													</tree>
+												</field>
+											</form>
+										</field>
+									</group>
+									
+									<group string="Finished">
+										<field name="move_material_finished_ids" nolabel="1">
+											<tree>
+												<field name="product_id"/>
+												<field name="product_uom"/>
+												<field name="quantity_available" attrs="{'invisible': [('is_done', '=', True)]}"/>
+			                                    <field name="product_uom_qty" readonly="1" attrs="{'required': [('product_id', '!=', False)]}" string="To Consume"/>
+			                                    <field name="quantity_done" attrs="{'readonly': ['|', ('is_done', '=', True), ('has_tracking', 'in', ['lot','serial'])]}" string="Consumed"/>
+			                                    <field name="state"/>
+											</tree>
+											<form>
+												<group>
+													<group>
+														<field name="product_id"/>
+														<field name="state"/>
+														<field name="location_id"/>
+														<field name="location_dest_id"/>
+														<field name="name"/>
+													</group>
+													<group>
+														<field name="product_uom"/>
+														<field name="product_uom_qty" readonly="1" attrs="{'required': [('product_id', '!=', False)]}" string="To Consume"/>
+													</group>
+												</group>
+												<field name="active_move_lot_ids">
+													<tree editable="bottom">
+														<field name="product_id"/>
+														<field name="lot_produced_id"/>
+														<field name="quantity_done"/>
+													</tree>
+												</field>
+											</form>
+										</field>
+									</group>
+								</group>
+								
+							</page> -->
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		
+		
+		<record id="material_cutting_line_tree_view" model="ir.ui.view">
+			<field name="name">material.cutting.line.tree.view</field>
+			<field name="model">material.cutting.line</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<tree string="Cutting Lines">
+					<field name="lot_id" />
+					<field name="quantity_done" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="action_material_cutting" model="ir.actions.act_window">
+            <field name="name">Cutting</field>
+            <field name="res_model">material.cutting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="material_cutting_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+		<record id="action_material_cutting_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="material_cutting_tree_view"/>
+            <field name="act_window_id" ref="action_material_cutting"/>
+        </record>
+        
+		<record id="action_material_cutting_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="material_cutting_form_view"/>
+            <field name="act_window_id" ref="action_material_cutting"/>
+        </record>
+		
+		<menuitem id="menu_material" name="Material" sequence="110" web_icon="core_textile,static/description/cut.png"/>
+        <menuitem id="menu_cutting" name="Cutting" parent="menu_material" sequence="1" action="action_material_cutting"/>
+	</data>
+</odoo>

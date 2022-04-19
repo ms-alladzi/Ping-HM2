@@ -1,0 +1,63 @@
+<odoo>
+	<data>
+		<record id="pickup_request_tree_view" model="ir.ui.view">
+			<field name="name">pickup.request.tree.view</field>
+			<field name="model">pickup.request</field>
+			<field name="arch" type="xml">
+				<!-- <tree string="CSR Proposal" colors="red:remaining_declaration &lt; created_date;"> -->
+				<tree string="Pickup">
+					<field name="name" />
+					<field name="date" />
+					<field name="invoice_id" />
+					<field name="requestor_name" />
+					<field name="pickup_name" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="pickup_request_form_view" model="ir.ui.view">
+			<field name="name">pickup.request.form.view</field>
+			<field name="model">pickup.request</field>
+			<field name="arch" type="xml">
+				<form string="Pickup Request">
+					<header>
+						<button name="confirm" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<div class="oe_title">
+	                        <h1><field name="name" placeholder="Cutting Order Reference" nolabel="1"/></h1>
+	                    </div>
+						<group>
+							<group>
+								<field name="date" attrs="{'readonly' : [('state','!=','draft')]}"/>
+								<field name="invoice_id" attrs="{'readonly' : [('state','!=','draft')]}"/>
+							</group>
+							<group>
+								<field name="requestor_name" attrs="{'readonly' : [('state','!=','draft')]}"/>
+								<field name="pickup_name" attrs="{'readonly' : [('state','!=','draft')]}"/>
+								<field name="mobile" placeholder="e.g 0817xxxxxx" attrs="{'readonly' : [('state','!=','draft')]}"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_pickup_request" model="ir.actions.act_window">
+            <field name="name">Pickup Order</field>
+            <field name="res_model">pickup.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="pickup_request_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <!-- <field name="search_view_id" ref="view_account_invoice_filter"/> -->
+        </record>
+		
+		<menuitem id="menu_pickup_delivery" name="Pickup &amp; Delivery" sequence="110" parent="ping_modifier_cutting.menu_material"/>
+        <menuitem id="menu_pickup" name="Pickup" parent="menu_pickup_delivery" sequence="1" action="action_pickup_request"/>
+	
+	</data>
+</odoo>
